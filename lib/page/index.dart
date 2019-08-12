@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:easy_market/Advertisement/openAd.dart';
 
-// import 'package:easy_market/utils/rem.dart';
+import 'package:easy_market/utils/rem.dart';
+
 class Page extends StatefulWidget {
   _Page createState() => _Page();
 }
