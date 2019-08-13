@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+// import 'dart:io';
 import 'package:flutter/services.dart';
 import 'page/index.dart';
 import 'package:easy_market/utils/rem.dart';
 
 void main() {
   runApp(MyApp());
-  if (Platform.isAndroid) {
-    //设置Android头部的导航栏透明
-    SystemUiOverlayStyle systemUiOverlayStyle =
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  }
+  // if (Platform.isAndroid) {
+  //   //设置Android头部的导航栏透明
+  //   SystemUiOverlayStyle systemUiOverlayStyle =
+  //       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+  //   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  // }
+  //白色
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark
+      .copyWith(statusBarBrightness: Brightness.light));
 }
 
 class MyApp extends StatelessWidget {
