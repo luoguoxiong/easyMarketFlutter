@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Sort extends StatelessWidget {
+class Detail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
         onTap: () {
           // 进行Named页面跳转 传递参数
-          Navigator.pushNamed(context, '/detail');
+          Navigator.pop(context, '/page');
         },
-        child: Text("分类页"),
+        child: Text("返回"),
       ),
     );
   }
