@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../component/tab.dart';
-import 'home.dart';
+import 'home/index.dart';
 import 'topic.dart';
 import 'sort.dart';
 import 'mine.dart';

@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 
-//  var response = await HttpUtils().get("/api/topic/list", {'page': 1, 'size': 5});
 class HttpUtils {
-  Dio http;
+  static Dio http;
   HttpUtils() {
     BaseOptions options =
         new BaseOptions(baseUrl: 'http://202.96.155.121:8888', headers: {
@@ -24,7 +23,7 @@ class HttpUtils {
       return e; //continue
     }));
     // 开启日志
-    http.interceptors.add(LogInterceptor(responseBody: false));
+    // http.interceptors.add(LogInterceptor(responseBody: false));
   }
   get(String url, [Map parmas]) {
     return http.get(url,
