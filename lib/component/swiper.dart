@@ -29,7 +29,6 @@ class _SwiperViewState extends State<SwiperView> {
       width: MediaQuery.of(context).size.width,
       height: 200,
       child: Swiper(
-        itemWidth: 200,
         itemCount: imageList.length,
         itemBuilder: _swiperBuilder,
         pagination: SwiperPagination(

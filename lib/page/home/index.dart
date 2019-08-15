@@ -5,6 +5,8 @@ import 'package:easy_market/utils/http.dart';
 import './channel.dart';
 import './brand.dart';
 import './news.dart';
+import './hot.dart';
+import './topic.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -16,7 +18,7 @@ class Home extends StatefulWidget {
 class _Home extends State<Home> {
   bool isLoading = true;
 
-  List banner, channel, brand, news = [];
+  List banner, channel, brand, news, hot, topic = [];
 
   @override
   void initState() {
@@ -41,11 +43,17 @@ class _Home extends State<Home> {
     var brandData = data.data['brandList'];
     // 新品推荐
     var newsData = data.data['newGoodsList'];
+    // 人气推荐
+    var hotData = data.data['hotGoodsList'];
+    // 专题精选
+    var topicList = data.data['topicList'];
     setState(() {
       banner = bannerList;
       channel = channelData;
       brand = brandData;
       news = newsData;
+      hot = hotData;
+      topic = topicList;
       isLoading = false;
     });
   }
@@ -65,6 +73,8 @@ class _Home extends State<Home> {
               Channel(channel),
               Brand(brand),
               News(news),
+              Hot(hot),
+              Topic(topic),
             ],
           ),
         ),

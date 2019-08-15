@@ -6,7 +6,6 @@ class News extends StatelessWidget {
   News(this.data);
   final title = '新品首发';
   Widget newsItem(msg) {
-    print(msg);
     return Container(
       width: Rem.getPxToRem(375),
       child: Column(
@@ -50,6 +49,9 @@ class News extends StatelessWidget {
         children: <Widget>[
           Container(
             height: Rem.getPxToRem(100),
+            decoration: BoxDecoration(
+                border: Border(
+                    bottom: BorderSide(color: Colors.grey[300], width: .5))),
             child: Center(
               child: Text(
                 title,
