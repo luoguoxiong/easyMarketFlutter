@@ -2,15 +2,15 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 class Rem {
-  static double _designWidth = 750;
+  static double _designWidth = 750.0;
   static bool _isInit = false;
   static double windowWidth = MediaQueryData.fromWindow(ui.window).size.width;
 
-  static getPxToRem(val) {
+  static double getPxToRem(val) {
     return windowWidth * val / _designWidth;
   }
 
-  static getRemToPx(val) {
+  static double getRemToPx(val) {
     return val * _designWidth / windowWidth;
   }
 

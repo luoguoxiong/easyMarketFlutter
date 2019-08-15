@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:easy_market/Advertisement/openAd.dart';
-
+import './app.dart';
 // import 'package:easy_market/utils/rem.dart';
+
 class Page extends StatefulWidget {
   _Page createState() => _Page();
 }
 
 class _Page extends State<Page> {
+  // 是否启用广告
   bool showAd = false;
   // 广告展示时间
   int _seconds = 2;
@@ -56,9 +58,7 @@ class _Page extends State<Page> {
       children: <Widget>[
         // 显示app
         Offstage(
-          child: Container(
-            color: Colors.lightGreen,
-          ),
+          child: App(),
           offstage: showAd,
         ),
         // 显示广告
