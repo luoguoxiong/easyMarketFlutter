@@ -7,6 +7,7 @@ import './brand.dart';
 import './news.dart';
 import './hot.dart';
 import './topic.dart';
+import './goods.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class Home extends StatefulWidget {
 class _Home extends State<Home> {
   bool isLoading = true;
 
-  List banner, channel, brand, news, hot, topic = [];
+  List banner, channel, brand, news, hot, topic, category = [];
 
   @override
   void initState() {
@@ -47,6 +48,8 @@ class _Home extends State<Home> {
     var hotData = data.data['hotGoodsList'];
     // 专题精选
     var topicList = data.data['topicList'];
+    // 推荐商品
+    var categoryList = data.data['categoryList'];
     setState(() {
       banner = bannerList;
       channel = channelData;
@@ -54,6 +57,7 @@ class _Home extends State<Home> {
       news = newsData;
       hot = hotData;
       topic = topicList;
+      category = categoryList;
       isLoading = false;
     });
   }
@@ -75,6 +79,7 @@ class _Home extends State<Home> {
               News(news),
               Hot(hot),
               Topic(topic),
+              Goods(category),
             ],
           ),
         ),

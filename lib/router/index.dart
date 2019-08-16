@@ -4,6 +4,7 @@ import './noFound.dart';
 import './detail.dart';
 
 class Router {
+  // 路由声明
   static Map<String, Function> routes = {
     '/page': (context, {arguments}) => Goods(arguments: arguments),
     '/detail': (context) => Detail(),
