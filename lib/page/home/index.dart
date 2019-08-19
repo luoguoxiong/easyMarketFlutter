@@ -70,18 +70,16 @@ class _Home extends State<Home> {
       );
     } else {
       return new SafeArea(
-        child: new SingleChildScrollView(
-          child: new Column(
-            children: <Widget>[
-              SwiperView(banner),
-              Channel(channel),
-              Brand(brand),
-              News(news),
-              Hot(hot),
-              Topic(topic),
-              Goods(category),
-            ],
-          ),
+        child: new ListView(
+          children: <Widget>[
+            SwiperView(banner),
+            Channel(channel),
+            Brand(brand),
+            News(news),
+            Hot(hot),
+            Topic(topic),
+            Goods(category),
+          ],
         ),
       );
     }

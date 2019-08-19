@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
-import '../component/tab.dart';
-import 'home/index.dart';
-import 'topic.dart';
-import 'sort.dart';
-import 'mine.dart';
+import 'package:easy_market/component/tab.dart';
+import 'package:easy_market/page/topic.dart';
+import 'package:easy_market/page/mine.dart';
+import 'package:easy_market/page/sort.dart';
+import './home/index.dart';
 
 class App extends StatefulWidget {
-  App({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    return _App();
+    return _ApplicationPageState();
   }
 }
 
-class _App extends State<App> {
+class _ApplicationPageState extends State<App> {
+  int _currentPageIndex = 0;
+
+  final pageList = [
+    Home(),
+    Topic(),
+    Sort(),
+    Mine(),
+  ];
+
   final tabitems = [
     TabItem('首页', 'assets/images/tab_home_default.png',
         'assets/images/tab_home_active.png'),
@@ -25,47 +33,54 @@ class _App extends State<App> {
         'assets/images/tab_mine_active.png'),
   ];
 
-  int _selectIndex = 0;
-
-  List<BottomNavigationBarItem> tabItemList;
-
-  List<Widget> pages;
-
-  @override
-  void initState() {
-    super.initState();
-    pages = [
-      Home(),
-      Topic(),
-      Sort(),
-      Mine(),
-    ];
+  Widget getPage(_index) {
+    return pageList[_index];
   }
 
-//Stack（层叠布局）+Offstage组合,解决状态被重置的问题
   Widget _getPagesWidget(int index) {
-    return pages[index];
-  }
-
-  @override
-  void didUpdateWidget(App oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print('didUpdateWidget');
-  }
-
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: _getPagesWidget(_selectIndex),
-      backgroundColor: Color.fromARGB(255, 245, 245, 249),
-      bottomNavigationBar: TabOp(
-        currentIndex: _selectIndex,
-        onTabChange: (int index) {
-          setState(() {
-            _selectIndex = index;
-          });
-        },
-        items: tabitems,
+    return Offstage(
+      offstage: _currentPageIndex != index,
+      child: TickerMode(
+        enabled: _currentPageIndex == index,
+        child: pageList[index],
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        appBar: new PreferredSize(
+          child: new Container(
+            decoration: new BoxDecoration(
+              gradient:
+                  new LinearGradient(colors: [Colors.teal, Colors.lightGreen]),
+            ),
+          ),
+          preferredSize: new Size(MediaQuery.of(context).size.width, 0),
+        ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child: new Stack(
+                children: [
+                  _getPagesWidget(0),
+                  _getPagesWidget(1),
+                  _getPagesWidget(2),
+                  _getPagesWidget(3),
+                ],
+              ),
+            ),
+            TabOp(
+              currentIndex: _currentPageIndex,
+              onTabChange: (int index) {
+                setState(() {
+                  _currentPageIndex = index;
+                });
+              },
+              items: tabitems,
+            ),
+          ],
+        ));
   }
 }

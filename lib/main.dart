@@ -17,8 +17,8 @@ void main() {
   //   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   // }
   //白色
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark
-      .copyWith(statusBarBrightness: Brightness.light));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
+      .copyWith(statusBarBrightness: Brightness.dark));
 }
 
 class MyApp extends StatelessWidget {

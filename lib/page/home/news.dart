@@ -14,7 +14,8 @@ class News extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: Rem.getPxToRem(20)),
             child: Image.network(
               msg["list_pic_url"],
-              fit: BoxFit.fitWidth,
+              height: Rem.getPxToRem(300),
+              width: double.infinity,
             ),
           ),
           Center(
