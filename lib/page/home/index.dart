@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_market/component/swiper.dart';
 import 'package:easy_market/utils/http.dart';
@@ -34,8 +35,9 @@ class _Home extends State<Home> {
     // 轮播图数据
     var bannerData = data.data['banner'];
     List<Widget> bannerList = List();
-    bannerData.forEach((item) => bannerList.add(Image.network(
-          item['image_url'],
+    bannerData.forEach((item) => bannerList.add(FadeInImage.memoryNetwork(
+          placeholder: kTransparentImage,
+          image: item['image_url'],
           fit: BoxFit.fill,
         )));
     // channel数据
@@ -66,7 +68,10 @@ class _Home extends State<Home> {
   Widget build(BuildContext context) {
     if (isLoading) {
       return Center(
-        child: new Text('loading...'),
+        child: SizedBox(
+            width: 24.0,
+            height: 24.0,
+            child: CircularProgressIndicator(strokeWidth: 2.0)),
       );
     } else {
       return new SafeArea(

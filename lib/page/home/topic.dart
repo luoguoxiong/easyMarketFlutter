@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_market/utils/rem.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class Topic extends StatelessWidget {
   final List data;
@@ -20,8 +21,9 @@ class Topic extends StatelessWidget {
                   Container(
                     height: Rem.getPxToRem(400),
                     width: double.infinity,
-                    child: new Image.network(
-                      imgList[index]['scene_pic_url'],
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: imgList[index]['scene_pic_url'],
                       fit: BoxFit.cover,
                     ),
                   ),

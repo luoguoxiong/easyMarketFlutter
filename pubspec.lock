@@ -50,6 +50,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.13"
+  english_words:
+    dependency: "direct main"
+    description:
+      name: english_words
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.1.5"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -163,6 +170,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.1.6"
+  transparent_image:
+    dependency: "direct main"
+    description:
+      name: transparent_image
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.0"
   typed_data:
     dependency: transitive
     description:

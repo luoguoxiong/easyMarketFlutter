@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_market/utils/rem.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class News extends StatelessWidget {
   final List data;
@@ -12,8 +13,9 @@ class News extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Rem.getPxToRem(20)),
-            child: Image.network(
-              msg["list_pic_url"],
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: msg["list_pic_url"],
               height: Rem.getPxToRem(300),
               width: double.infinity,
             ),

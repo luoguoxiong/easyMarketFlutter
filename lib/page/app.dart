@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_market/component/tab.dart';
-import 'package:easy_market/page/topic.dart';
+import 'package:easy_market/page/topic/index.dart';
 import 'package:easy_market/page/mine.dart';
 import 'package:easy_market/page/sort.dart';
 import './home/index.dart';
@@ -62,14 +62,15 @@ class _ApplicationPageState extends State<App> {
         body: Column(
           children: <Widget>[
             Expanded(
-              child: new Stack(
-                children: [
-                  _getPagesWidget(0),
-                  _getPagesWidget(1),
-                  _getPagesWidget(2),
-                  _getPagesWidget(3),
-                ],
-              ),
+              // child: new Stack(
+              //   children: [
+              //     _getPagesWidget(0),
+              //     _getPagesWidget(1),
+              //     _getPagesWidget(2),
+              //     _getPagesWidget(3),
+              //   ],
+              // ),
+              child: pageList[_currentPageIndex],
             ),
             TabOp(
               currentIndex: _currentPageIndex,
