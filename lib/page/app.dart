@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:easy_market/page/home/index.dart';
 import 'package:easy_market/page/topic/index.dart';
+import 'package:easy_market/page/sort/index.dart';
 import 'package:easy_market/page/mine.dart';
-import 'package:easy_market/page/sort.dart';
-import './home/index.dart';
 
 class App extends StatefulWidget {
   @override
@@ -78,6 +78,7 @@ class _ApplicationPageState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: Color.fromARGB(1, 200, 200, 200),
       appBar: new PreferredSize(
         child: new Container(
           decoration: new BoxDecoration(
