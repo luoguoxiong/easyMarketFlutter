@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_market/utils/rem.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class News extends StatelessWidget {
   final List data;
@@ -13,9 +13,9 @@ class News extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Rem.getPxToRem(20)),
-            child: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: msg["list_pic_url"],
+            child: CachedNetworkImage(
+              imageUrl: msg['list_pic_url'],
+              errorWidget: (context, url, error) => new Icon(Icons.error),
               height: Rem.getPxToRem(300),
               width: double.infinity,
             ),

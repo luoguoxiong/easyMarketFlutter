@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:easy_market/component/tab.dart';
 import 'package:easy_market/page/topic/index.dart';
 import 'package:easy_market/page/mine.dart';
 import 'package:easy_market/page/sort.dart';
@@ -12,6 +11,12 @@ class App extends StatefulWidget {
   }
 }
 
+class _Item {
+  String name, activeIcon, normalIcon;
+
+  _Item(this.name, this.activeIcon, this.normalIcon);
+}
+
 class _ApplicationPageState extends State<App> {
   int _currentPageIndex = 0;
 
@@ -22,66 +27,79 @@ class _ApplicationPageState extends State<App> {
     Mine(),
   ];
 
-  final tabitems = [
-    TabItem('首页', 'assets/images/tab_home_default.png',
-        'assets/images/tab_home_active.png'),
-    TabItem('专题', 'assets/images/tab_copy_default.png',
-        'assets/images/tab_copy_active.png'),
-    TabItem('分类', 'assets/images/tab_sort_default.png',
-        'assets/images/tab_sort_active.png'),
-    TabItem('我的', 'assets/images/tab_mine_default.png',
-        'assets/images/tab_mine_active.png'),
-  ];
-
   Widget getPage(_index) {
     return pageList[_index];
   }
 
-  Widget _getPagesWidget(int index) {
-    return Offstage(
-      offstage: _currentPageIndex != index,
-      child: TickerMode(
-        enabled: _currentPageIndex == index,
-        child: pageList[index],
-      ),
-    );
+  final itemNames = [
+    _Item('首页', 'assets/images/ic_tab_home_active.png',
+        'assets/images/ic_tab_home_normal.png'),
+    _Item('专题', 'assets/images/ic_tab_subject_active.png',
+        'assets/images/ic_tab_subject_normal.png'),
+    _Item('分类', 'assets/images/ic_tab_group_active.png',
+        'assets/images/ic_tab_group_normal.png'),
+    // _Item('市集', 'assets/images/ic_tab_shiji_active.png',
+    //     'assets/images/ic_tab_shiji_normal.png'),
+    _Item('我的', 'assets/images/ic_tab_profile_active.png',
+        'assets/images/ic_tab_profile_normal.png')
+  ];
+  List<BottomNavigationBarItem> itemList;
+  @override
+  void initState() {
+    super.initState();
+    if (itemList == null) {
+      itemList = itemNames
+          .map((item) => BottomNavigationBarItem(
+              icon: Image.asset(
+                item.normalIcon,
+                width: 30.0,
+                height: 30.0,
+              ),
+              title: Text(
+                item.name,
+                style: TextStyle(fontSize: 10.0),
+              ),
+              activeIcon:
+                  Image.asset(item.activeIcon, width: 30.0, height: 30.0)))
+          .toList();
+    }
   }
+
+  // Widget _getPagesWidget(int index) {
+  //   return Offstage(
+  //     offstage: _currentPageIndex != index,
+  //     child: TickerMode(
+  //       enabled: _currentPageIndex == index,
+  //       child: pageList[index],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new PreferredSize(
-          child: new Container(
-            decoration: new BoxDecoration(
-              gradient:
-                  new LinearGradient(colors: [Colors.teal, Colors.lightGreen]),
-            ),
+      appBar: new PreferredSize(
+        child: new Container(
+          decoration: new BoxDecoration(
+            gradient:
+                new LinearGradient(colors: [Colors.teal, Colors.lightGreen]),
           ),
-          preferredSize: new Size(MediaQuery.of(context).size.width, 0),
         ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              // child: new Stack(
-              //   children: [
-              //     _getPagesWidget(0),
-              //     _getPagesWidget(1),
-              //     _getPagesWidget(2),
-              //     _getPagesWidget(3),
-              //   ],
-              // ),
-              child: pageList[_currentPageIndex],
-            ),
-            TabOp(
-              currentIndex: _currentPageIndex,
-              onTabChange: (int index) {
-                setState(() {
-                  _currentPageIndex = index;
-                });
-              },
-              items: tabitems,
-            ),
-          ],
-        ));
+        preferredSize: new Size(MediaQuery.of(context).size.width, 0),
+      ),
+      body: pageList[_currentPageIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: itemList,
+        onTap: (int index) {
+          setState(() {
+            _currentPageIndex = index;
+          });
+        },
+        iconSize: 24,
+        currentIndex: _currentPageIndex,
+        fixedColor: Color.fromARGB(255, 0, 188, 96),
+        type: BottomNavigationBarType.fixed,
+      ),
+    );
   }
 }

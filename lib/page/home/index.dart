@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_market/component/swiper.dart';
-import 'package:easy_market/utils/http.dart';
+import 'package:easy_market/api/index.dart';
 import './channel.dart';
 import './brand.dart';
 import './news.dart';
@@ -29,15 +29,13 @@ class _Home extends State<Home> {
   }
 
   _getDio() async {
-    var httpUtils = HttpUtils();
-    var parmas = {};
-    Response data = await httpUtils.get('/api', parmas);
+    Response data = await Api.getHomeData();
     // 轮播图数据
     var bannerData = data.data['banner'];
     List<Widget> bannerList = List();
-    bannerData.forEach((item) => bannerList.add(FadeInImage.memoryNetwork(
-          placeholder: kTransparentImage,
-          image: item['image_url'],
+    bannerData.forEach((item) => bannerList.add(CachedNetworkImage(
+          imageUrl: item['image_url'],
+          errorWidget: (context, url, error) => new Icon(Icons.error),
           fit: BoxFit.fill,
         )));
     // channel数据
@@ -77,13 +75,18 @@ class _Home extends State<Home> {
       return new SafeArea(
         child: new ListView(
           children: <Widget>[
-            SwiperView(banner),
-            Channel(channel),
-            Brand(brand),
-            News(news),
-            Hot(hot),
-            Topic(topic),
-            Goods(category),
+            // todo卡顿问题
+            Column(
+              children: <Widget>[
+                SwiperView(banner),
+                Channel(channel),
+                Brand(brand),
+                News(news),
+                Hot(hot),
+                Topic(topic),
+                Goods(category),
+              ],
+            )
           ],
         ),
       );

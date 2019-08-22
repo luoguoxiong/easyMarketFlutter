@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_market/utils/rem.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Goods extends StatelessWidget {
   final List data;
@@ -86,9 +86,8 @@ class Goods extends StatelessWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
               height: Rem.getPxToRem(360),
-              child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: item['list_pic_url'],
+              child: CachedNetworkImage(
+                imageUrl: item['list_pic_url'],
                 fit: BoxFit.cover,
               ),
             ),

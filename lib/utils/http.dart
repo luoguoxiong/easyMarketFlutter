@@ -4,7 +4,7 @@ class HttpUtils {
   static Dio http;
   HttpUtils() {
     BaseOptions options =
-        new BaseOptions(baseUrl: 'http://202.96.155.121:8888', headers: {
+        new BaseOptions(baseUrl: 'http://202.96.155.121:8888/api', headers: {
       'x-nideshop-token': '',
     });
     http = new Dio(options);
@@ -25,12 +25,11 @@ class HttpUtils {
     // 开启日志
     // http.interceptors.add(LogInterceptor(responseBody: false));
   }
-  get(String url, [Map parmas]) {
-    return http.get(url,
-        queryParameters: new Map<String, dynamic>.from(parmas));
+  Future get(String url, [Map<String, dynamic> params]) {
+    return http.get(url, queryParameters: params == null ? {} : params);
   }
 
-  post(String url, [Map parmas]) {
-    return http.post(url, data: new Map<String, dynamic>.from(parmas));
+  Future post(String url, [Map<String, dynamic> params]) {
+    return http.post(url, data: params == null ? {} : params);
   }
 }

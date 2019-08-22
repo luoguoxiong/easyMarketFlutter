@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:easy_market/utils/rem.dart';
-import 'package:transparent_image/transparent_image.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Channel extends StatelessWidget {
   final List data;
@@ -35,9 +35,8 @@ class TopicItem extends StatelessWidget {
               top: Rem.getPxToRem(25),
               right: Rem.getPxToRem(25)),
           child: Center(
-            child: FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: url,
+            child: CachedNetworkImage(
+              imageUrl: url,
               fit: BoxFit.fitWidth,
             ),
           ),
