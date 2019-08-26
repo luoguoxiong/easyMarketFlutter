@@ -1,11 +1,19 @@
+/*
+ * @Description: main
+ * @Author: luoguoxiong
+ * @Date: 2019-08-15 10:08:01
+ */
 import 'package:flutter/material.dart';
-// import 'dart:io';
 import 'package:flutter/services.dart';
-import 'page/index.dart';
+import 'package:easy_market/page/index.dart';
 import 'package:easy_market/utils/rem.dart';
+import 'package:easy_market/router/index.dart';
+// import 'package:easy_market/utils/cache.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
+  // SpUtil sp = await SpUtil.getInstance();
+  // sp.putString('ss', 'ss缓存');
   // if (Platform.isAndroid) {
   //   //设置Android头部的导航栏透明
   //   SystemUiOverlayStyle systemUiOverlayStyle =
@@ -13,12 +21,12 @@ void main() {
   //   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
   // }
   //白色
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark
-      .copyWith(statusBarBrightness: Brightness.light));
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
+      .copyWith(statusBarBrightness: Brightness.dark));
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+// 定义路由信息
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +35,10 @@ class MyApp extends StatelessWidget {
     return RestartWidget(
       child: MaterialApp(
         theme: ThemeData(backgroundColor: Colors.transparent),
+        // 监听路由跳转
+        onGenerateRoute: (RouteSettings settings) {
+          return Router.run(settings);
+        },
         home: Scaffold(
           resizeToAvoidBottomPadding: false,
           body: Page(),

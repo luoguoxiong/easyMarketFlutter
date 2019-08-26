@@ -12,7 +12,7 @@ class _Page extends State<Page> {
   // 是否启用广告
   bool showAd = false;
   // 广告展示时间
-  int _seconds = 2;
+  int _seconds = 4;
 
   Timer _timer;
 
@@ -63,7 +63,7 @@ class _Page extends State<Page> {
         ),
         // 显示广告
         Offstage(
-          child: OpenAd(),
+          child: OpenAd(_seconds),
           offstage: !showAd,
         ),
       ],

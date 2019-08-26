@@ -1,70 +1,107 @@
 import 'package:flutter/material.dart';
-import '../component/tab.dart';
-import 'home/index.dart';
-import 'topic.dart';
-import 'sort.dart';
-import 'mine.dart';
+import 'package:easy_market/page/home/index.dart';
+import 'package:easy_market/page/topic/index.dart';
+import 'package:easy_market/page/sort/index.dart';
+import 'package:easy_market/page/mine/index.dart';
+import 'package:easy_market/page/cart/index.dart';
 
 class App extends StatefulWidget {
-  App({Key key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    return _App();
+    return _ApplicationPageState();
   }
 }
 
-class _App extends State<App> {
-  final tabitems = [
-    TabItem('首页', 'assets/images/tab_home_default.png',
-        'assets/images/tab_home_active.png'),
-    TabItem('专题', 'assets/images/tab_copy_default.png',
-        'assets/images/tab_copy_active.png'),
-    TabItem('分类', 'assets/images/tab_sort_default.png',
-        'assets/images/tab_sort_active.png'),
-    TabItem('我的', 'assets/images/tab_mine_default.png',
-        'assets/images/tab_mine_active.png'),
+class _Item {
+  String name, activeIcon, normalIcon;
+
+  _Item(this.name, this.activeIcon, this.normalIcon);
+}
+
+class _ApplicationPageState extends State<App> {
+  int _currentPageIndex = 0;
+
+  final pageList = [
+    Home(),
+    Topic(),
+    Sort(),
+    Cart(),
+    Mine(),
   ];
 
-  int _selectIndex = 0;
+  Widget getPage(_index) {
+    return pageList[_index];
+  }
 
-  List<BottomNavigationBarItem> tabItemList;
-
-  List<Widget> pages;
-
+  final itemNames = [
+    _Item('首页', 'assets/images/ic_tab_home_active.png',
+        'assets/images/ic_tab_home_normal.png'),
+    _Item('专题', 'assets/images/ic_tab_subject_active.png',
+        'assets/images/ic_tab_subject_normal.png'),
+    _Item('分类', 'assets/images/ic_tab_group_active.png',
+        'assets/images/ic_tab_group_normal.png'),
+    _Item('购物车', 'assets/images/ic_tab_shiji_active.png',
+        'assets/images/ic_tab_shiji_normal.png'),
+    _Item('我的', 'assets/images/ic_tab_profile_active.png',
+        'assets/images/ic_tab_profile_normal.png')
+  ];
+  List<BottomNavigationBarItem> itemList;
   @override
   void initState() {
     super.initState();
-    pages = [
-      Home(),
-      Topic(),
-      Sort(),
-      Mine(),
-    ];
+    if (itemList == null) {
+      itemList = itemNames
+          .map((item) => BottomNavigationBarItem(
+              icon: Image.asset(
+                item.normalIcon,
+                width: 30.0,
+                height: 30.0,
+              ),
+              title: Text(
+                item.name,
+                style: TextStyle(fontSize: 10.0),
+              ),
+              activeIcon:
+                  Image.asset(item.activeIcon, width: 30.0, height: 30.0)))
+          .toList();
+    }
   }
 
-//Stack（层叠布局）+Offstage组合,解决状态被重置的问题
-  Widget _getPagesWidget(int index) {
-    return pages[index];
-  }
+  // Widget _getPagesWidget(int index) {
+  //   return Offstage(
+  //     offstage: _currentPageIndex != index,
+  //     child: TickerMode(
+  //       enabled: _currentPageIndex == index,
+  //       child: pageList[index],
+  //     ),
+  //   );
+  // }
 
   @override
-  void didUpdateWidget(App oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print('didUpdateWidget');
-  }
-
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: _getPagesWidget(_selectIndex),
-      backgroundColor: Color.fromARGB(255, 245, 245, 249),
-      bottomNavigationBar: TabOp(
-        currentIndex: _selectIndex,
-        onTabChange: (int index) {
+      backgroundColor: Color.fromARGB(1, 200, 200, 200),
+      appBar: new PreferredSize(
+        child: new Container(
+          decoration: new BoxDecoration(
+            gradient:
+                new LinearGradient(colors: [Colors.teal, Colors.lightGreen]),
+          ),
+        ),
+        preferredSize: new Size(MediaQuery.of(context).size.width, 0),
+      ),
+      body: pageList[_currentPageIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: itemList,
+        onTap: (int index) {
           setState(() {
-            _selectIndex = index;
+            _currentPageIndex = index;
           });
         },
-        items: tabitems,
+        iconSize: 24,
+        currentIndex: _currentPageIndex,
+        fixedColor: Color.fromARGB(255, 0, 188, 96),
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class Topic extends StatelessWidget {
+class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new Container(
-      child: new Text('专题页'),
+    return Center(
+      child: Text('我是购物车页'),
     );
   }
 }
