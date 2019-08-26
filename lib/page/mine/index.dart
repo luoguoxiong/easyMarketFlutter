@@ -107,7 +107,6 @@ class Mine extends StatelessWidget {
                   width: Rem.getPxToRem(180),
                   height: Rem.getPxToRem(180),
                   decoration: BoxDecoration(
-                    color: Colors.green,
                     image: new DecorationImage(
                       image: new NetworkImage(
                           'http://yanxuan.nosdn.127.net/8945ae63d940cc42406c3f67019c5cb6.png'),
