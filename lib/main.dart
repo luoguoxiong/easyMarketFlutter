@@ -1,15 +1,19 @@
+/*
+ * @Description: main
+ * @Author: luoguoxiong
+ * @Date: 2019-08-15 10:08:01
+ */
 import 'package:flutter/material.dart';
-// import 'dart:io';
 import 'package:flutter/services.dart';
-import 'page/index.dart';
+import 'package:easy_market/page/index.dart';
 import 'package:easy_market/utils/rem.dart';
 import 'package:easy_market/router/index.dart';
-// import './router/goods.dart';
-// import './router/noFound.dart';
-// import './router/detail.dart';
+// import 'package:easy_market/utils/cache.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
+  // SpUtil sp = await SpUtil.getInstance();
+  // sp.putString('ss', 'ss缓存');
   // if (Platform.isAndroid) {
   //   //设置Android头部的导航栏透明
   //   SystemUiOverlayStyle systemUiOverlayStyle =

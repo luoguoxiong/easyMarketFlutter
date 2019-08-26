@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_market/api/index.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_market/utils/rem.dart';
+import 'package:easy_market/router/index.dart';
 
 class Topic extends StatefulWidget {
   @override
@@ -106,7 +107,7 @@ class _InfiniteListViewState extends State<Topic> {
                   ));
             }
           }
-          return Card(
+          Widget widget = Card(
               color: Colors.white,
               elevation: 4.0,
               margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
@@ -143,6 +144,8 @@ class _InfiniteListViewState extends State<Topic> {
                   )
                 ],
               )));
+          return Router.link(
+              widget, '/topicDetail', context, {'id': topicData[index]['id']});
         },
       ),
     );

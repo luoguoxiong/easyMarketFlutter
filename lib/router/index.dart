@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-import './goods.dart';
+import './catalog/index.dart';
+import './brand/index.dart';
+import './goodsDetail/index.dart';
+import './tipicDetail/index.dart';
+import './search/index.dart';
 import './noFound.dart';
-import './detail.dart';
 
 class Router {
   // 路由声明
   static Map<String, Function> routes = {
-    '/page': (context, {arguments}) => Goods(arguments: arguments),
-    '/detail': (context) => Detail(),
+    '/catalog': (context, {arguments}) => Catalog(arguments: arguments),
+    '/goodsDetail': (context, {arguments}) => GoodsDetail(arguments: arguments),
+    '/topicDetail': (context, {arguments}) => TopicDetail(arguments: arguments),
+    '/search': (context) => Search(),
+    '/brand': (context, {arguments}) => Brand(arguments: arguments),
   };
   static run(RouteSettings settings) {
     final Function pageContentBuilder = Router.routes[settings.name];
@@ -27,5 +33,19 @@ class Router {
       // 404页
       return MaterialPageRoute(builder: (context) => NoFoundPage());
     }
+  }
+
+  static link(Widget child, String routeName, BuildContext context,
+      [Map parmas]) {
+    return GestureDetector(
+      onTap: () {
+        if (parmas != null) {
+          Navigator.pushNamed(context, routeName, arguments: parmas);
+        } else {
+          Navigator.pushNamed(context, routeName);
+        }
+      },
+      child: child,
+    );
   }
 }

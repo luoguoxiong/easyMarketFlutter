@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_market/page/home/index.dart';
 import 'package:easy_market/page/topic/index.dart';
 import 'package:easy_market/page/sort/index.dart';
-import 'package:easy_market/page/mine.dart';
+import 'package:easy_market/page/mine/index.dart';
+import 'package:easy_market/page/cart/index.dart';
 
 class App extends StatefulWidget {
   @override
@@ -24,6 +25,7 @@ class _ApplicationPageState extends State<App> {
     Home(),
     Topic(),
     Sort(),
+    Cart(),
     Mine(),
   ];
 
@@ -38,8 +40,8 @@ class _ApplicationPageState extends State<App> {
         'assets/images/ic_tab_subject_normal.png'),
     _Item('分类', 'assets/images/ic_tab_group_active.png',
         'assets/images/ic_tab_group_normal.png'),
-    // _Item('市集', 'assets/images/ic_tab_shiji_active.png',
-    //     'assets/images/ic_tab_shiji_normal.png'),
+    _Item('购物车', 'assets/images/ic_tab_shiji_active.png',
+        'assets/images/ic_tab_shiji_normal.png'),
     _Item('我的', 'assets/images/ic_tab_profile_active.png',
         'assets/images/ic_tab_profile_normal.png')
   ];

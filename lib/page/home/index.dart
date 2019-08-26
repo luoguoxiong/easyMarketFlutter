@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_market/component/swiper.dart';
 import 'package:easy_market/api/index.dart';
 import 'package:easy_market/utils/rem.dart';
+import 'package:easy_market/router/index.dart';
 import './topic.dart';
 
 class Home extends StatefulWidget {
@@ -81,8 +82,8 @@ class _Home extends State<Home> {
       ];
       for (var i = 0; i < category.length; i++) {
         sliversList.add(buildTitle(category[i]['name']));
-        sliversList
-            .add(buildCategory(category[i]['goodsList'], category[i]['name']));
+        sliversList.add(buildCategory(
+            category[i]['goodsList'], category[i]['name'], category[i]['id']));
       }
       return new SafeArea(
         child: CustomScrollView(
@@ -110,41 +111,47 @@ class _Home extends State<Home> {
       ),
       delegate: new SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          return Column(
-            children: <Widget>[
-              Expanded(
-                flex: 2,
-                child: new Container(
-                  color: Colors.white,
-                  padding: EdgeInsets.only(
-                      bottom: Rem.getPxToRem(4),
-                      left: Rem.getPxToRem(25),
-                      top: Rem.getPxToRem(25),
-                      right: Rem.getPxToRem(25)),
-                  child: Center(
-                    child: CachedNetworkImage(
-                      imageUrl: channel[index]['icon_url'],
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: new Container(
-                  color: Colors.white,
-                  child: Center(
-                    child: new Text(
-                      channel[index]['name'],
-                      style: TextStyle(
-                        fontSize: Rem.getPxToRem(20),
+          return Router.link(
+              Column(
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: new Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.only(
+                          bottom: Rem.getPxToRem(4),
+                          left: Rem.getPxToRem(25),
+                          top: Rem.getPxToRem(25),
+                          right: Rem.getPxToRem(25)),
+                      child: Center(
+                        child: CachedNetworkImage(
+                          imageUrl: channel[index]['icon_url'],
+                          fit: BoxFit.fitWidth,
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  Expanded(
+                    flex: 1,
+                    child: new Container(
+                      color: Colors.white,
+                      child: Center(
+                        child: new Text(
+                          channel[index]['name'],
+                          style: TextStyle(
+                            fontSize: Rem.getPxToRem(20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          );
+              '/catalog',
+              context,
+              {
+                'id': channel[index]['id'],
+              });
         },
         childCount: 5,
       ),
@@ -160,7 +167,7 @@ class _Home extends State<Home> {
       ),
       delegate: new SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          return Container(
+          Widget widget = Container(
             child: Column(
               children: <Widget>[
                 Container(
@@ -187,6 +194,9 @@ class _Home extends State<Home> {
                     fit: BoxFit.fill,
                     image: NetworkImage(brand[index]['new_pic_url']))),
           );
+          return Router.link(widget, '/brand', context, {
+            'id': brand[index]['id'],
+          });
         },
         childCount: brand.length,
       ),
@@ -203,7 +213,7 @@ class _Home extends State<Home> {
         childAspectRatio: .9,
       ),
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-        return Container(
+        Widget widget = Container(
           color: Colors.white,
           child: Column(
             children: <Widget>[
@@ -246,6 +256,9 @@ class _Home extends State<Home> {
             ],
           ),
         );
+        return Router.link(widget, '/goodsDetail', context, {
+          'id': news[index]['id'],
+        });
       }, childCount: news.length),
     );
   }
@@ -254,7 +267,7 @@ class _Home extends State<Home> {
   SliverList buildHot() {
     return SliverList(
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-        return Container(
+        Widget widget = Container(
           decoration: BoxDecoration(
               color: Colors.white,
               border:
@@ -327,7 +340,9 @@ class _Home extends State<Home> {
             ),
           ),
         );
-        ;
+        return Router.link(widget, '/goodsDetail', context, {
+          'id': hot[index]['id'],
+        });
       }, childCount: hot.length),
     );
   }
@@ -336,13 +351,13 @@ class _Home extends State<Home> {
   SliverList buildTopic() {
     return SliverList(
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-        return Topic(topic);
+        return Topic(topic, context);
       }, childCount: 1),
     );
   }
 
 // 某类型的商品
-  SliverGrid buildCategory(goods, typeName) {
+  SliverGrid buildCategory(goods, typeName, id) {
     return SliverGrid(
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -353,7 +368,7 @@ class _Home extends State<Home> {
         delegate: new SliverChildBuilderDelegate(
           (BuildContext context, int index) {
             if (goods.length == index) {
-              return Container(
+              Widget widget = Container(
                 color: Colors.white,
                 child: Center(
                   child: Container(
@@ -378,8 +393,11 @@ class _Home extends State<Home> {
                   ),
                 ),
               );
+              return Router.link(widget, '/catalog', context, {
+                'id': id,
+              });
             }
-            return Container(
+            Widget widget = Container(
               color: Colors.white,
               child: Column(
                 children: <Widget>[
@@ -423,6 +441,9 @@ class _Home extends State<Home> {
                 ],
               ),
             );
+            return Router.link(widget, '/goodsDetail', context, {
+              'id': goods[index]['id'],
+            });
           },
           childCount: goods.length + 1,
         ));

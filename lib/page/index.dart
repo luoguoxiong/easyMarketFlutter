@@ -10,7 +10,7 @@ class Page extends StatefulWidget {
 
 class _Page extends State<Page> {
   // 是否启用广告
-  bool showAd = true;
+  bool showAd = false;
   // 广告展示时间
   int _seconds = 4;
 

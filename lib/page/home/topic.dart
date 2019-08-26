@@ -5,7 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class Topic extends StatelessWidget {
   final List data;
-  Topic(this.data);
+  final BuildContext contexts;
+  Topic(this.data, this.contexts);
   final String title = '专题精选';
   Widget swiper(List imgList) {
     return Container(
@@ -63,7 +64,13 @@ class Topic extends StatelessWidget {
         },
         controller: SwiperController(),
         scrollDirection: Axis.horizontal,
-        onTap: (index) => print('点击了第$index'),
+        onTap: (index) {
+          Navigator.pushNamed(
+            contexts,
+            '/topicDetail',
+            arguments: {'id': imgList[index]['id']},
+          );
+        },
         viewportFraction: 0.8,
       ),
     );

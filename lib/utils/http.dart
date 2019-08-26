@@ -5,7 +5,8 @@ class HttpUtils {
   HttpUtils() {
     BaseOptions options =
         new BaseOptions(baseUrl: 'http://202.96.155.121:8888/api', headers: {
-      'x-nideshop-token': '',
+      'x-nideshop-token':
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNiwiaWF0IjoxNTY1OTIwMzkzfQ.bf59rexueLVSeR87gflpMWQfzyDKj45YpD6unaIV2m0',
     });
     http = new Dio(options);
     // 添加拦截器
