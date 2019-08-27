@@ -5,8 +5,11 @@
  */
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-// import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import 'package:easy_market/model/index.dart';
 import 'package:easy_market/utils/rem.dart';
+import 'package:easy_market/router/index.dart';
+import 'package:easy_market/utils/cache.dart';
 
 class Mine extends StatelessWidget {
   final List<Map<String, dynamic>> gridList = [
@@ -24,16 +27,38 @@ class Mine extends StatelessWidget {
     {'name': '退出登录', 'icon': 'assets/images/logout.png'}
   ];
 
+  void todo({int index, BuildContext context}) async {
+    var item = gridList[index]['name'];
+    if (item == '退出登录') {
+      final model = Provider.of<Model>(context);
+      var sq = await SpUtil.getInstance();
+      sq.remove('token');
+      model.setToken(null);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: CustomScrollView(
-        slivers: <Widget>[
-          buildHeader(),
-          buildItem(),
-        ],
-      ),
-    );
+    final model = Provider.of<Model>(context);
+    if (model.token != null) {
+      return SafeArea(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            buildHeader(),
+            buildItem(),
+          ],
+        ),
+      );
+    } else {
+      return Center(
+        child: RaisedButton(
+          child: Text("请先登录！"),
+          onPressed: () {
+            Router.push('/login', context);
+          },
+        ),
+      );
+    }
   }
 
 // 製造商
@@ -47,34 +72,39 @@ class Mine extends StatelessWidget {
       ),
       delegate: new SliverChildBuilderDelegate(
         (BuildContext context, int index) {
-          return Container(
-            color: Colors.white,
-            child: Center(
-              child: Container(
-                height: Rem.getPxToRem(120),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      width: Rem.getPxToRem(60),
-                      child: Image.asset(
-                        gridList[index]['icon'],
+          return InkResponse(
+            child: Container(
+              color: Colors.white,
+              child: Center(
+                child: Container(
+                  height: Rem.getPxToRem(120),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
                         width: Rem.getPxToRem(60),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        child: Center(
-                          child: Text(
-                            gridList[index]['name'],
-                            style: TextStyle(fontSize: Rem.getPxToRem(24)),
-                          ),
+                        child: Image.asset(
+                          gridList[index]['icon'],
+                          width: Rem.getPxToRem(60),
                         ),
                       ),
-                    )
-                  ],
+                      Expanded(
+                        child: Container(
+                          child: Center(
+                            child: Text(
+                              gridList[index]['name'],
+                              style: TextStyle(fontSize: Rem.getPxToRem(24)),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
+            onTap: () {
+              todo(index: index, context: context);
+            },
           );
         },
         childCount: gridList.length,

@@ -5,6 +5,8 @@ import './goodsDetail/index.dart';
 import './tipicDetail/index.dart';
 import './search/index.dart';
 import './noFound.dart';
+import './login/index.dart';
+import 'package:easy_market/page/index.dart';
 
 class Router {
   // 路由声明
@@ -13,6 +15,8 @@ class Router {
     '/goodsDetail': (context, {arguments}) => GoodsDetail(arguments: arguments),
     '/topicDetail': (context, {arguments}) => TopicDetail(arguments: arguments),
     '/search': (context) => Search(),
+    '/home': (context) => Page(),
+    '/login': (context) => Login(),
     '/brand': (context, {arguments}) => Brand(arguments: arguments),
   };
   static run(RouteSettings settings) {
@@ -47,5 +51,17 @@ class Router {
       },
       child: child,
     );
+  }
+
+  static push(String routeName, BuildContext context, [Map parmas]) {
+    if (parmas != null) {
+      Navigator.pushNamed(context, routeName, arguments: parmas);
+    } else {
+      Navigator.pushNamed(context, routeName);
+    }
+  }
+
+  static pop(context) {
+    Navigator.pop(context);
   }
 }

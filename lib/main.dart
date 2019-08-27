@@ -5,15 +5,18 @@
  */
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:easy_market/page/index.dart';
+import 'package:provider/provider.dart';
 import 'package:easy_market/utils/rem.dart';
 import 'package:easy_market/router/index.dart';
-// import 'package:easy_market/utils/cache.dart';
+import 'package:easy_market/model/index.dart';
+import 'package:easy_market/utils/cache.dart';
+import 'package:easy_market/page/index.dart';
 
 void main() async {
-  runApp(MyApp());
-  // SpUtil sp = await SpUtil.getInstance();
-  // sp.putString('ss', 'ss缓存');
+  var sq = await SpUtil.getInstance();
+  var token = sq.getString('token');
+  runApp(MyApp(token));
+
   // if (Platform.isAndroid) {
   //   //设置Android头部的导航栏透明
   //   SystemUiOverlayStyle systemUiOverlayStyle =
@@ -26,23 +29,33 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-// 定义路由信息
+  MyApp(this.token);
+  final String token;
 
   @override
   Widget build(BuildContext context) {
     // 设置设计稿的宽度
     Rem.setDesignWidth(750.0);
-    return RestartWidget(
-      child: MaterialApp(
-        theme: ThemeData(backgroundColor: Colors.transparent),
-        // 监听路由跳转
-        onGenerateRoute: (RouteSettings settings) {
-          return Router.run(settings);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(builder: (_) => Model(token)),
+      ],
+      child: Consumer<Model>(
+        builder: (context, model, widget) {
+          return RestartWidget(
+            child: MaterialApp(
+              theme: ThemeData(backgroundColor: Colors.transparent),
+              // 监听路由跳转
+              onGenerateRoute: (RouteSettings settings) {
+                return Router.run(settings);
+              },
+              home: Scaffold(
+                resizeToAvoidBottomPadding: false,
+                body: Page(),
+              ),
+            ),
+          );
         },
-        home: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          body: Page(),
-        ),
       ),
     );
   }

@@ -67,16 +67,6 @@ class _ApplicationPageState extends State<App> {
     }
   }
 
-  // Widget _getPagesWidget(int index) {
-  //   return Offstage(
-  //     offstage: _currentPageIndex != index,
-  //     child: TickerMode(
-  //       enabled: _currentPageIndex == index,
-  //       child: pageList[index],
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
