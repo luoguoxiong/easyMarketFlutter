@@ -27,4 +27,21 @@ class Api {
   static Future getCategoryMsg({int id}) async {
     return await http.get('/catalog/current', {'id': id});
   }
+
+  // 通过手机号码登录
+  static Future loginByMobile({String mobile, String password}) async {
+    return await http
+        .post('/auth/loginByMobile', {'mobile': mobile, 'password': password});
+  }
+
+  // 获取兄弟分类
+  static Future getBrotherCatalog({int id}) async {
+    return await http.get('/goods/category', {'id': id});
+  }
+
+  // 某分类的商品
+  static Future getGoods({int page, int size, int categoryId}) async {
+    return await http.get(
+        '/goods/list', {'page': page, 'size': size, 'categoryId': categoryId});
+  }
 }

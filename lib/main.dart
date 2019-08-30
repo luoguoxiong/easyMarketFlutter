@@ -15,7 +15,8 @@ import 'package:easy_market/page/index.dart';
 void main() async {
   var sq = await SpUtil.getInstance();
   var token = sq.getString('token');
-  runApp(MyApp(token));
+  var userName = sq.getString('userName');
+  runApp(MyApp(token, userName));
 
   // if (Platform.isAndroid) {
   //   //设置Android头部的导航栏透明
@@ -29,8 +30,10 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp(this.token);
+  MyApp(this.token, this.userName);
   final String token;
+
+  final String userName;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class MyApp extends StatelessWidget {
     Rem.setDesignWidth(750.0);
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(builder: (_) => Model(token)),
+        ChangeNotifierProvider(builder: (_) => Model(token, userName)),
       ],
       child: Consumer<Model>(
         builder: (context, model, widget) {

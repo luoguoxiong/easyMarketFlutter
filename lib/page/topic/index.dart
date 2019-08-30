@@ -85,7 +85,6 @@ class _InfiniteListViewState extends State<Topic> {
         itemBuilder: (context, index) {
           //如果到了表尾
           if (topicData[index] == loadingTag) {
-            //不足100条，继续获取数据
             if (topicData.length - 1 < total) {
               _getMore();
 

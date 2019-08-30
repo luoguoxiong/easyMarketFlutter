@@ -44,7 +44,7 @@ class Mine extends StatelessWidget {
       return SafeArea(
         child: CustomScrollView(
           slivers: <Widget>[
-            buildHeader(),
+            buildHeader(context),
             buildItem(),
           ],
         ),
@@ -61,7 +61,6 @@ class Mine extends StatelessWidget {
     }
   }
 
-// 製造商
   SliverGrid buildItem() {
     return SliverGrid(
       gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
@@ -112,7 +111,8 @@ class Mine extends StatelessWidget {
     );
   }
 
-  SliverList buildHeader() {
+  SliverList buildHeader(BuildContext context) {
+    final model = Provider.of<Model>(context);
     return SliverList(
       delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
         return Container(
@@ -153,7 +153,7 @@ class Mine extends StatelessWidget {
                 child: Container(
                   child: Center(
                     child: Text(
-                      '15323807318',
+                      '${model.userName}',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
