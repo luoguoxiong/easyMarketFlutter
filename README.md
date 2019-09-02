@@ -14,8 +14,8 @@ EasyMarketFlutter
 
 ## 预览
 
-| ![](D:\gitHub\easyMarketFlutter\imges\EasyMarket.gif) | ![](D:\gitHub\easyMarketFlutter\imges\EasyMarket.gif) | ![](D:\gitHub\easyMarketFlutter\imges\EasyMarket.gif) | ![](D:\gitHub\easyMarketFlutter\imges\EasyMarket.gif) |
-| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
-|                                                       |                                                       |                                                       |                                                       |
-|                                                       |                                                       |                                                       |                                                       |
+| ![](.\imges\EasyMarket.gif) | ![](.\imges\EasyMarket.gif) | ![](.\imges\EasyMarket.gif) | ![](.\imges\EasyMarket.gif) |
+| --------------------------- | --------------------------- | --------------------------- | --------------------------- |
+|                             |                             |                             |                             |
+|                             |                             |                             |                             |
 
