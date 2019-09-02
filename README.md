@@ -1,4 +1,4 @@
-EasyMarketFlutter
+# EasyMarketFlutter
 
 > 1、EasyMarketFlutter是仿网易严选 设计的 App（商城类）。项目是基于 Flutter框架的混合开发（Android与IOS）
 >
@@ -14,8 +14,8 @@ EasyMarketFlutter
 
 ## 预览
 
-| ![](.\imges\EasyMarket.gif) | ![](.\imges\EasyMarket.gif) | ![](.\imges\EasyMarket.gif) | ![](.\imges\EasyMarket.gif) |
-| --------------------------- | --------------------------- | --------------------------- | --------------------------- |
-|                             |                             |                             |                             |
-|                             |                             |                             |                             |
+| ![](\imges\EasyMarket.gif) | ![](\imges\EasyMarket.gif) | ![](\imges\EasyMarket.gif) | ![](\imges\EasyMarket.gif) |
+| -------------------------- | -------------------------- | -------------------------- | -------------------------- |
+|                            |                            |                            |                            |
+|                            |                            |                            |                            |
 
