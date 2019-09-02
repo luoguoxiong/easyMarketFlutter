@@ -22,6 +22,7 @@
 ## 已实现
 
 * Provider+shared_preferences实现数据状态管理、缓存。
+* App的启动页、广告页。
 * Rem适配方案。
 * Dio的二次封装，API模块化。
 * 封装侧边栏Tab切换组件。
