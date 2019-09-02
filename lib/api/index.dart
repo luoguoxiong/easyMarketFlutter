@@ -40,8 +40,27 @@ class Api {
   }
 
   // 某分类的商品
-  static Future getGoods({int page, int size, int categoryId}) async {
+  static Future getGoods({
+    int page,
+    int size,
+    int categoryId,
+  }) async {
     return await http.get(
         '/goods/list', {'page': page, 'size': size, 'categoryId': categoryId});
+  }
+
+  // 某制造商的相关信息
+  static Future getBrandMsg({int id}) async {
+    return await http.get('/brand/detail', {'id': id});
+  }
+
+  // 某制造商下的商品
+  static Future getBrandGoods({
+    int page,
+    int size,
+    int brandId,
+  }) async {
+    return await http
+        .get('/goods/list', {'page': page, 'size': size, 'brandId': brandId});
   }
 }
