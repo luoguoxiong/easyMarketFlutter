@@ -25,7 +25,8 @@
 * Rem适配方案。
 * Dio的二次封装，API模块化。
 * 封装侧边栏Tab切换组件。
-* 封装Appbar与Tab的AppTab切换。
+* 封装Appbar与Tab的AppbarTab组件。
+* 封装滚动渐变的Appbar组件。
 * 下拉刷新与上拉加载更多。
 * 路由模块管理。
 
