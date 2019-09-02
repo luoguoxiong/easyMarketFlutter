@@ -4,6 +4,7 @@ import 'package:easy_market/page/topic/index.dart';
 import 'package:easy_market/page/sort/index.dart';
 import 'package:easy_market/page/mine/index.dart';
 import 'package:easy_market/page/cart/index.dart';
+import 'package:easy_market/page/wrapper.dart';
 
 class App extends StatefulWidget {
   @override
@@ -22,11 +23,11 @@ class _ApplicationPageState extends State<App> {
   int _currentPageIndex = 0;
 
   final pageList = [
-    Home(),
-    Topic(),
-    Sort(),
-    Cart(),
-    Mine(),
+    WrapKeepState(Home()),
+    WrapKeepState(Topic()),
+    WrapKeepState(Sort()),
+    WrapKeepState(Cart()),
+    WrapKeepState(Mine()),
   ];
 
   Widget getPage(_index) {
@@ -67,6 +68,18 @@ class _ApplicationPageState extends State<App> {
     }
   }
 
+  final pageController = PageController();
+
+  void onTap(int index) {
+    pageController.jumpToPage(index);
+  }
+
+  void onPageChanged(int index) {
+    setState(() {
+      _currentPageIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -80,12 +93,19 @@ class _ApplicationPageState extends State<App> {
         ),
         preferredSize: new Size(MediaQuery.of(context).size.width, 0),
       ),
-      body: pageList[_currentPageIndex],
+      // PageView+wrapper封装保存页面状态
+      body: PageView(
+        children: pageList,
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        physics: NeverScrollableScrollPhysics(), // 禁止滑动
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: itemList,
         onTap: (int index) {
           setState(() {
             _currentPageIndex = index;
+            pageController.jumpToPage(index);
           });
         },
         iconSize: 24,
