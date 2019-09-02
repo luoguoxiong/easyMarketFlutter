@@ -14,8 +14,8 @@
 
 ## 预览
 
-| ![](./imges/EasyMarket.gif) | ![](./imges/EasyMarket.gif) | ![](./imges/EasyMarket.gif) | ![](./imges/EasyMarket.gif) |
-| --------------------------- | --------------------------- | --------------------------- | --------------------------- |
-|                             |                             |                             |                             |
-|                             |                             |                             |                             |
+| ![](./imges/EasyMarket.gif) | ![](./imges/home.png)  | ![](./imges/topic.png)   | ![](./imges/sort.png)  |
+| --------------------------- | ---------------------- | ------------------------ | ---------------------- |
+| ![](./imges/mine.png)       | ![](./imges/login.png) | ![](./imges/catalog.png) | ![](./imges/brand.png) |
+|                             |                        |                          |                        |
 
