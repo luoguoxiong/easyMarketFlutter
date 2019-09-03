@@ -27,11 +27,11 @@ class _CatalogGoods extends State<CatalogGoods>
   static int chunk = 2; //没列显示多少个商品
 
   List<dynamic> dataList = ['isLoading'];
+
   @override
   void initState() {
     super.initState();
     _getInitData();
-    // _getMore();
   }
 
   @override

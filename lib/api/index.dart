@@ -1,3 +1,8 @@
+/*
+ * @Description: API管理
+ * @Author: luoguoxiong
+ * @Date: 2019-08-26 17:29:18
+ */
 import 'package:easy_market/utils/http.dart';
 
 var http = new HttpUtils();

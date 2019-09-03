@@ -1,3 +1,8 @@
+/*
+ * @Description: 自定义Tab
+ * @Author: luoguoxiong
+ * @Date: 2019-08-15 10:08:01
+ */
 import 'package:flutter/material.dart';
 import '../utils/rem.dart';
 

@@ -1,3 +1,8 @@
+/*
+ * @Description: Dio的封装
+ * @Author: luoguoxiong
+ * @Date: 2019-08-26 17:29:18
+ */
 import 'package:dio/dio.dart';
 
 class HttpUtils {

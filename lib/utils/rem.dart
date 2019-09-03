@@ -1,3 +1,8 @@
+/*
+ * @Description: Rem适配
+ * @Author: luoguoxiong
+ * @Date: 2019-08-26 17:29:18
+ */
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 

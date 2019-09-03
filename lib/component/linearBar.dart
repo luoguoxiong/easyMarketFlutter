@@ -1,3 +1,8 @@
+/*
+ * @Description: 滚动渐变的appBar组件
+ * @Author: luoguoxiong
+ * @Date: 2019-08-30 14:21:15
+ */
 import 'package:flutter/material.dart';
 import 'package:easy_market/utils/rem.dart';
 

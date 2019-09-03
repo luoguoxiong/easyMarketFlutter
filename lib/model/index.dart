@@ -1,3 +1,8 @@
+/*
+ * @Description: Provider数据管理
+ * @Author: luoguoxiong
+ * @Date: 2019-08-27 15:34:15
+ */
 import 'package:flutter/material.dart';
 
 class Model with ChangeNotifier {

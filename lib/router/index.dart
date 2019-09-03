@@ -1,3 +1,9 @@
+/*
+ * @Description: 路由管理
+ * @Author: luoguoxiong
+ * @Date: 2019-08-24 17:29:18
+ */
+
 import 'package:flutter/material.dart';
 import './catalog/index.dart';
 import './brand/index.dart';
@@ -19,6 +25,8 @@ class Router {
     '/login': (context) => Login(),
     '/brand': (context, {arguments}) => Brand(arguments: arguments),
   };
+
+  // 路由初始化
   static run(RouteSettings settings) {
     final Function pageContentBuilder = Router.routes[settings.name];
 
@@ -39,6 +47,7 @@ class Router {
     }
   }
 
+// 组件跳转
   static link(Widget child, String routeName, BuildContext context,
       [Map parmas]) {
     return GestureDetector(
@@ -53,6 +62,7 @@ class Router {
     );
   }
 
+// 方法跳转
   static push(String routeName, BuildContext context, [Map parmas]) {
     if (parmas != null) {
       Navigator.pushNamed(context, routeName, arguments: parmas);

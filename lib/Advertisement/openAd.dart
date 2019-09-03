@@ -1,3 +1,8 @@
+/*
+ * @Description: 广告页
+ * @Author: luoguoxiong
+ * @Date: 2019-08-26 17:29:18
+ */
 import 'package:flutter/material.dart';
 
 class OpenAd extends StatelessWidget {

@@ -230,13 +230,7 @@ class _Brand extends State<Brand> {
             buildOneWidget(buildBrandLogo()),
             buildOneWidget(buildBrandDes()),
             buildBrandGoods(),
-            SliverList(
-                delegate: new SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return buildMore();
-              },
-              childCount: 1,
-            ))
+            buildOneWidget(buildMore()),
           ],
         ),
         removePadding: true,
