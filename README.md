@@ -43,6 +43,18 @@
 * 目前只提供了android的下载体验，IOS请自行下载代码体验。
 * 在开发环境的debug可能会稍微卡顿，属正常现象，良好的体验请进行打release包。
 
+## 友情链接
+
+1. [Flutter中文网](https://flutterchina.club/) 
+2. [Dart从入门到放弃](http://dart.goodev.org/)
+3. [Flutter从入门到放弃](https://book.flutterchina.club/)
+4. [Flutter-go](https://github.com/alibaba/flutter-go)
+5. [Flutter路由管理](https://github.com/theyakka/fluro) 
+6. [Flutter很全的Api说明](https://github.com/yang7229693/flutter-study)
+7. [我写的项目](https://github.com/Peroluo/easyMarketFlutter)
+8. [常用的一些包](https://www.cnblogs.com/yangyxd/p/9232308.html)
+9. [阿里巴巴Flutter代码规范](https://github.com/alibaba/flutter-go/blob/master/Flutter_Go%20%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83.md)
+
 ## 最后
 
 * 如果EasyMarketFlutter对你有帮助，留下你的Star或者fork，你的支持是我不断更新的动力！！
