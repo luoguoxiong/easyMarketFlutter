@@ -12,6 +12,8 @@ import './tipicDetail/index.dart';
 import './search/index.dart';
 import './noFound.dart';
 import './login/index.dart';
+import './writeComment/index.dart';
+import './moreComment/index.dart';
 import 'package:easy_market/page/index.dart';
 
 class Router {
@@ -24,6 +26,9 @@ class Router {
     '/home': (context) => Page(),
     '/login': (context) => Login(),
     '/brand': (context, {arguments}) => Brand(arguments: arguments),
+    '/writeComment': (context, {arguments}) =>
+        WriteComment(arguments: arguments),
+    '/moreComment': (context, {arguments}) => MoreComment(arguments: arguments),
   };
 
   // 路由初始化
