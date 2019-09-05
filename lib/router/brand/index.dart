@@ -102,7 +102,6 @@ class _Brand extends State<Brand> {
       // 如果下拉的当前位置到scroll的最下面
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        print(!moreLoading);
         if (!moreLoading && (total > brandGoods.length)) {
           getMoreBrandGoods();
         }

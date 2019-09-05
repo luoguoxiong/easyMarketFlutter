@@ -89,12 +89,16 @@ class _LinearBar extends State<LinearBar> {
                   },
                 ),
                 Expanded(
-                  child: Center(
-                    child: Text(
-                      widget.title,
-                      style: TextStyle(
-                          color: Colors.white, fontSize: Rem.getPxToRem(38)),
+                  child: Padding(
+                    child: Center(
+                      child: Text(
+                        widget.title,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.white, fontSize: Rem.getPxToRem(38)),
+                      ),
                     ),
+                    padding: EdgeInsets.symmetric(horizontal: 20),
                   ),
                 ),
                 Container(

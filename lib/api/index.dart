@@ -68,4 +68,25 @@ class Api {
     return await http
         .get('/goods/list', {'page': page, 'size': size, 'brandId': brandId});
   }
+
+  // 某专题的相关信息
+  static Future getTopicMsg({int id}) async {
+    return await http.get('/topic/detail', {'id': id});
+  }
+
+  // 获取某专题的评论
+  static Future getTopicComment({
+    int valueId,
+    int typeId,
+    int page,
+    int size,
+  }) async {
+    return await http.get('/comment/list',
+        {'valueId': valueId, 'typeId': typeId, 'page': page, 'size': size});
+  }
+
+  // 某专题相关专题
+  static Future getRelatedTopic({int id}) async {
+    return await http.get('/topic/related', {'id': id});
+  }
 }

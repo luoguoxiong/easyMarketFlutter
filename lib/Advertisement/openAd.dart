@@ -10,14 +10,35 @@ class OpenAd extends StatelessWidget {
   final int time;
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
+      height: double.infinity,
       decoration: BoxDecoration(
           image: DecorationImage(
         image: AssetImage('assets/images/timg.jpg'),
         fit: BoxFit.cover,
       )),
-      // child: new Center(
-      //   child: Text('$time'),
-      // ),
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            bottom: 30,
+            right: 10,
+            child: Container(
+              width: 60,
+              height: 30,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(100, 59, 70, 88),
+                borderRadius: new BorderRadius.all(new Radius.circular(15.0)),
+              ),
+              child: Center(
+                child: Text(
+                  '$time S',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

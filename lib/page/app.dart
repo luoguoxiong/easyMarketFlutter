@@ -86,10 +86,11 @@ class _ApplicationPageState extends State<App> {
       backgroundColor: Color.fromARGB(1, 200, 200, 200),
       appBar: new PreferredSize(
         child: new Container(
-          decoration: new BoxDecoration(
-            gradient:
-                new LinearGradient(colors: [Colors.teal, Colors.lightGreen]),
-          ),
+          // decoration: new BoxDecoration(
+          //   gradient:
+          //       new LinearGradient(colors: [Colors.teal, Colors.lightGreen]),
+          // ),
+          color: Colors.green,
         ),
         preferredSize: new Size(MediaQuery.of(context).size.width, 0),
       ),

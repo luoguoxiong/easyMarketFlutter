@@ -12,7 +12,7 @@ class _Page extends State<Page> {
   // 是否启用广告
   bool showAd = true;
   // 广告展示时间
-  int _seconds = 4;
+  int _seconds = 5;
 
   Timer _timer;
 
