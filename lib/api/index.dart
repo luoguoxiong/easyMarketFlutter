@@ -89,4 +89,14 @@ class Api {
   static Future getRelatedTopic({int id}) async {
     return await http.get('/topic/related', {'id': id});
   }
+
+  // 商品信息
+  static Future getGoodsMSG({int id}) async {
+    return await http.get('/goods/detail', {'id': id});
+  }
+
+  // 获取购物信息
+  static Future getCartMsg({String token, int id}) async {
+    return await http.getToken('/cart/index', token, {'id': id});
+  }
 }

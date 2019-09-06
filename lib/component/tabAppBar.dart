@@ -16,44 +16,45 @@ class TabAppBar extends StatelessWidget {
   final String title;
   Widget buildAppBar(BuildContext context) {
     return new Container(
-        width: double.infinity,
-        padding: new EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-        child: new Container(
-          child: Row(
-            children: <Widget>[
-              InkResponse(
-                child: Container(
-                  width: Rem.getPxToRem(100),
-                  child: Center(
-                    child: Icon(
-                      Icons.keyboard_arrow_left,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                        color: Colors.white, fontSize: Rem.getPxToRem(38)),
-                  ),
-                ),
-              ),
-              Container(
+      width: double.infinity,
+      padding: new EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      child: new Container(
+        child: Row(
+          children: <Widget>[
+            InkResponse(
+              child: Container(
                 width: Rem.getPxToRem(100),
+                child: Center(
+                  child: Icon(
+                    Icons.keyboard_arrow_left,
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ],
-          ),
-          height: Rem.getPxToRem(100),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            Expanded(
+              child: Center(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      color: Colors.white, fontSize: Rem.getPxToRem(38)),
+                ),
+              ),
+            ),
+            Container(
+              width: Rem.getPxToRem(100),
+            ),
+          ],
         ),
-        decoration: new BoxDecoration(
-          gradient: new LinearGradient(colors: [Colors.teal, Colors.green]),
-        ));
+        height: Rem.getPxToRem(100),
+      ),
+      decoration: new BoxDecoration(
+        gradient: new LinearGradient(colors: [Colors.teal, Colors.green]),
+      ),
+    );
   }
 
   Widget buildTabBar() {
