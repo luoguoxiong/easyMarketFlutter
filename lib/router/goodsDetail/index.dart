@@ -28,6 +28,8 @@ class _GoodsDetail extends State<GoodsDetail> {
 
   int goodsCount = 0;
 
+  Map goodsMsgs;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -46,6 +48,7 @@ class _GoodsDetail extends State<GoodsDetail> {
       var cartData = data[1].data;
       setState(() {
         imgList = goodsMsg['gallery'];
+        goodsMsgs = goodsMsg;
         initLoading = false;
         goodsCount = cartData['cartTotal']['goodsCount'];
       });
@@ -56,6 +59,7 @@ class _GoodsDetail extends State<GoodsDetail> {
       var goodsMsg = data[0].data;
       setState(() {
         imgList = goodsMsg['gallery'];
+        goodsMsgs = goodsMsg;
         initLoading = false;
       });
     }
@@ -64,13 +68,12 @@ class _GoodsDetail extends State<GoodsDetail> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        backgroundColor: Color.fromARGB(1, 200, 200, 200),
         appBar: buildAppBar('母亲节礼物-舒适安睡组合'),
         body: Column(
           children: <Widget>[
             Expanded(
               child: Container(
-                color: Colors.white,
+                color: Color.fromARGB(1, 200, 200, 200),
                 child: buildContent(context),
               ),
             ),
@@ -178,6 +181,7 @@ class _GoodsDetail extends State<GoodsDetail> {
                         top: 0,
                         right: 0,
                         child: Container(
+                          color: Colors.white,
                           child: Text(
                             '$goodsCount',
                             style: TextStyle(
@@ -288,7 +292,15 @@ class _GoodsDetail extends State<GoodsDetail> {
     } else {
       return CustomScrollView(
         slivers: <Widget>[
-          buildOneWidget(buildSwiper(context, imgList)),
+          buildOneWidget(
+            buildSwiper(context, imgList),
+          ),
+          buildOneWidget(
+            buildGoodsLa(context),
+          ),
+          buildOneWidget(
+            buildGoodsMsg(context),
+          ),
         ],
       );
     }
@@ -330,6 +342,111 @@ class _GoodsDetail extends State<GoodsDetail> {
         autoplay: true,
         autoplayDelay: 4000,
         onTap: (index) => print('点击了第$index'),
+      ),
+    );
+  }
+
+// 商品活动栏
+  Widget buildGoodsLa(BuildContext context) {
+    return Container(
+      color: Color.fromARGB(255, 244, 244, 244),
+      padding: EdgeInsets.all(5),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.star,
+                      color: Colors.red,
+                      size: Rem.getPxToRem(26),
+                    ),
+                    Container(
+                      child: Text(
+                        '30天无忧退货',
+                        style: TextStyle(fontSize: Rem.getPxToRem(26)),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.star,
+                      color: Colors.red,
+                      size: Rem.getPxToRem(26),
+                    ),
+                    Text(
+                      '满88元免邮费',
+                      style: TextStyle(fontSize: Rem.getPxToRem(26)),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.star,
+                      color: Colors.red,
+                      size: Rem.getPxToRem(26),
+                    ),
+                    Text(
+                      '48小时快速退款',
+                      style: TextStyle(fontSize: Rem.getPxToRem(26)),
+                    )
+                  ],
+                ),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  // 商品信息
+  Widget buildGoodsMsg(BuildContext context) {
+    print(goodsMsgs['info']);
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.all(10),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: Text(
+              goodsMsgs["info"]['name'],
+              style: TextStyle(
+                fontSize: Rem.getPxToRem(40),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: Text(
+              goodsMsgs["info"]['goods_brief'],
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: Rem.getPxToRem(30),
+              ),
+            ),
+          ),
+          Text(
+            '￥499',
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: Rem.getPxToRem(40),
+            ),
+          ),
+        ],
       ),
     );
   }
