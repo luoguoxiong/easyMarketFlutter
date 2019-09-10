@@ -68,7 +68,8 @@ class _GoodsDetail extends State<GoodsDetail> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: buildAppBar('母亲节礼物-舒适安睡组合'),
+        appBar: buildAppBar(
+            initLoading ? 'loading...' : '${goodsMsgs["info"]['name']}'),
         body: Column(
           children: <Widget>[
             Expanded(
@@ -301,6 +302,9 @@ class _GoodsDetail extends State<GoodsDetail> {
           buildOneWidget(
             buildGoodsMsg(context),
           ),
+          buildOneWidget(
+            buildSize(context),
+          ),
         ],
       );
     }
@@ -444,6 +448,55 @@ class _GoodsDetail extends State<GoodsDetail> {
             style: TextStyle(
               color: Colors.red,
               fontSize: Rem.getPxToRem(40),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 选择规格
+  Widget buildSize(BuildContext context) {
+    return Container(
+      height: Rem.getPxToRem(100),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(
+            color: Colors.grey,
+            width: .5,
+          ),
+        ),
+      ),
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: Text(
+              '已选',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+                padding: EdgeInsets.all(5),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        '1.5m床垫*1+枕头*2、浅杏粉1.5m',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text('x1'),
+                  ],
+                )),
+          ),
+          Padding(
+            padding: EdgeInsets.all(5),
+            child: Icon(
+              Icons.keyboard_arrow_right,
+              color: Colors.grey,
             ),
           ),
         ],

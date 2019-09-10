@@ -13,6 +13,9 @@ import 'package:easy_market/utils/cache.dart';
 import 'package:easy_market/page/index.dart';
 
 void main() async {
+  //  * https: //stackoverflow.com/questions/57689492/flutter-unhandled-exception-servicesbinding-defaultbinarymessenger-was-accesse
+  // 异步获取SpUtil时，版本升级会有问题WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   var sq = await SpUtil.getInstance();
   var token = sq.getString('token');
   var userName = sq.getString('userName');
