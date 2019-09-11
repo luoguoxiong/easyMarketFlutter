@@ -11,6 +11,9 @@ import 'package:provider/provider.dart';
 import 'package:easy_market/model/index.dart';
 import 'package:easy_market/utils/rem.dart';
 import 'package:easy_market/api/index.dart';
+import 'package:easy_market/component/bottom_sheet.dart';
+import 'package:easy_market/component/SliverCustomHeader.dart';
+import 'package:easy_market/component/count.dart';
 
 class GoodsDetail extends StatefulWidget {
   GoodsDetail({this.arguments});
@@ -26,10 +29,23 @@ class _GoodsDetail extends State<GoodsDetail> {
 
   bool initLoading = true;
 
-  int goodsCount = 0;
+  int goodsCount = 0; //购物车商品数量
 
   Map goodsMsgs;
 
+  List chooseSizeIndex; // 当前所选的规格下标
+
+  String chooseSizeStr; // 当前所选的规格名称
+
+  Map goodsStockPrice; // 当前所选的规格商品信息(库存、价格等)
+
+  int goodsNumber = 0; //商品数量
+
+  int goodsMin = 0; //商品最少
+
+  int goodsMax = 0; //商品最多
+
+  // 我不知道是否应该在这里进行数据请求，但我需要获取provider的值
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -39,113 +55,71 @@ class _GoodsDetail extends State<GoodsDetail> {
   getInitData() async {
     int id = widget.arguments['id'];
     final model = Provider.of<Model>(this.context);
+    List api = [Api.getGoodsMSG(id: id)];
     if (model.token != null) {
-      var data = await Future.wait([
-        Api.getGoodsMSG(id: id),
+      api.add(
         Api.getCartMsg(token: model.token, id: id),
-      ]);
-      var goodsMsg = data[0].data;
-      var cartData = data[1].data;
-      setState(() {
-        imgList = goodsMsg['gallery'];
-        goodsMsgs = goodsMsg;
-        initLoading = false;
-        goodsCount = cartData['cartTotal']['goodsCount'];
-      });
-    } else {
-      var data = await Future.wait([
-        Api.getGoodsMSG(id: id),
-      ]);
-      var goodsMsg = data[0].data;
-      setState(() {
-        imgList = goodsMsg['gallery'];
-        goodsMsgs = goodsMsg;
-        initLoading = false;
-      });
+      );
     }
+    var data = await Future.wait([
+      Api.getGoodsMSG(id: id),
+      Api.getCartMsg(token: model.token, id: id),
+    ]);
+    var goodsMsg = data[0].data;
+    var cartData = model.token != null ? data[1].data : null;
+
+    var specificationList = goodsMsg['specificationList'];
+    List<int> sizeIndex = [];
+    List<String> sizeNameList = [];
+    List<int> sizeId = [];
+    for (var i = 0; i < specificationList.length; i++) {
+      if (specificationList[i]['valueList'].length > 0) {
+        sizeIndex.add(0);
+        sizeId.add(specificationList[i]['valueList'][0]['id']);
+        sizeNameList.add(specificationList[i]['valueList'][0]['value']);
+      }
+    }
+    Map goodsStockPriceAny =
+        getGoodsMsgById(goodsMsg['productList'], sizeId.join('_'));
+    setState(() {
+      imgList = goodsMsg['gallery'];
+      goodsMsgs = goodsMsg;
+      initLoading = false;
+      goodsMax = goodsStockPriceAny['goods_number'];
+      chooseSizeIndex = sizeIndex;
+      chooseSizeStr = sizeNameList.join('、');
+      goodsStockPrice = goodsStockPriceAny;
+      goodsCount =
+          model.token != null ? cartData['cartTotal']['goodsCount'] : 0;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        appBar: buildAppBar(
-            initLoading ? 'loading...' : '${goodsMsgs["info"]['name']}'),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              child: Container(
-                color: Color.fromARGB(1, 200, 200, 200),
-                child: buildContent(context),
-              ),
+    return new Material(
+      child: Column(
+        children: <Widget>[
+          Expanded(
+            child: Container(
+              color: Color.fromARGB(1, 200, 200, 200),
+              child: buildContent(context),
             ),
-            buildFoot(context),
-          ],
-        ));
-  }
-
-// 导航栏
-  Widget buildAppBar(title) {
-    var paddingTop = MediaQuery.of(context).padding.top;
-    return new PreferredSize(
-      child: new Container(
-        child: Row(
-          children: <Widget>[
-            InkResponse(
-              child: Container(
-                width: Rem.getPxToRem(100),
-                child: Center(
-                  child: Icon(
-                    Icons.keyboard_arrow_left,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            Expanded(
-              child: Center(
-                child: Text(
-                  '$title',
-                  style: TextStyle(
-                      color: Colors.black, fontSize: Rem.getPxToRem(38)),
-                ),
-              ),
-            ),
-            Container(
-              width: Rem.getPxToRem(100),
-            ),
-          ],
-        ),
-        padding: new EdgeInsets.only(top: paddingTop),
-        height: Rem.getPxToRem(100) + paddingTop,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            new BoxShadow(
-              color: Colors.grey[200],
-              blurRadius: Rem.getPxToRem(1),
-              spreadRadius: 0.1,
-            )
-          ],
-        ),
+          ),
+          buildFoot(context),
+        ],
       ),
-      preferredSize: new Size(
-          MediaQuery.of(context).size.width, Rem.getPxToRem(100) + paddingTop),
     );
   }
 
 // 底部固定
   Widget buildFoot(BuildContext context) {
     return Container(
-      height: Rem.getPxToRem(110),
+      height: Rem.getPxToRem(100),
       padding: EdgeInsets.symmetric(vertical: Rem.getPxToRem(10)),
       child: Row(
         children: <Widget>[
           Container(
-            width: Rem.getPxToRem(110),
+            width: Rem.getPxToRem(100),
             child: Column(
               children: <Widget>[
                 Expanded(
@@ -170,30 +144,40 @@ class _GoodsDetail extends State<GoodsDetail> {
             child: Column(
               children: <Widget>[
                 Expanded(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.add_shopping_cart,
-                        color: Colors.grey,
-                        size: Rem.getPxToRem(50),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: Container(
-                          color: Colors.white,
-                          child: Text(
-                            '$goodsCount',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
+                  child: Container(
+                    width: double.infinity,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.shopping_cart,
+                          color: Colors.grey,
+                          size: Rem.getPxToRem(50),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: Rem.getPxToRem(20),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 2),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.red),
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(30),
+                              ),
+                            ),
+                            child: Text(
+                              '$goodsCount',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: Rem.getPxToRem(20),
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                          padding: EdgeInsets.all(1),
-                        ),
-                      )
-                    ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 Center(
@@ -293,8 +277,16 @@ class _GoodsDetail extends State<GoodsDetail> {
     } else {
       return CustomScrollView(
         slivers: <Widget>[
-          buildOneWidget(
-            buildSwiper(context, imgList),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: SliverCustomHeaderDelegate(
+              title:
+                  initLoading ? 'loading...' : '${goodsMsgs["info"]['name']}',
+              collapsedHeight: Rem.getPxToRem(100),
+              expandedHeight: Rem.getPxToRem(700),
+              paddingTop: MediaQuery.of(context).padding.top,
+              child: buildSwiper(context, imgList),
+            ),
           ),
           buildOneWidget(
             buildGoodsLa(context),
@@ -305,6 +297,9 @@ class _GoodsDetail extends State<GoodsDetail> {
           buildOneWidget(
             buildSize(context),
           ),
+          buildOneWidget(Container(
+            height: 500,
+          ))
         ],
       );
     }
@@ -323,6 +318,21 @@ class _GoodsDetail extends State<GoodsDetail> {
 
 // 轮播图
   Widget buildSwiper(BuildContext context, List imgData) {
+    if (imgData.length == 0) {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        height: Rem.getPxToRem(700),
+        color: Colors.blue,
+        child: Center(
+          child: Text(
+            '该商品还没有配置图片哦！',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      );
+    }
     return Container(
       width: MediaQuery.of(context).size.width,
       height: Rem.getPxToRem(700),
@@ -334,13 +344,6 @@ class _GoodsDetail extends State<GoodsDetail> {
             fit: BoxFit.cover,
           );
         },
-        pagination: SwiperPagination(
-            alignment: Alignment.bottomCenter,
-            margin: const EdgeInsets.fromLTRB(0, 0, 0, 5),
-            builder: DotSwiperPaginationBuilder(
-                color: Colors.grey[200],
-                size: 8,
-                activeColor: Colors.grey[400])),
         controller: SwiperController(),
         scrollDirection: Axis.horizontal,
         autoplay: true,
@@ -418,14 +421,13 @@ class _GoodsDetail extends State<GoodsDetail> {
 
   // 商品信息
   Widget buildGoodsMsg(BuildContext context) {
-    print(goodsMsgs['info']);
     return Container(
       color: Colors.white,
       padding: EdgeInsets.all(10),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(bottom: 5),
+            padding: EdgeInsets.only(bottom: 10),
             child: Text(
               goodsMsgs["info"]['name'],
               style: TextStyle(
@@ -434,7 +436,7 @@ class _GoodsDetail extends State<GoodsDetail> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 5),
+            padding: EdgeInsets.only(bottom: 10),
             child: Text(
               goodsMsgs["info"]['goods_brief'],
               style: TextStyle(
@@ -444,7 +446,7 @@ class _GoodsDetail extends State<GoodsDetail> {
             ),
           ),
           Text(
-            '￥499',
+            '￥${goodsStockPrice['retail_price']}',
             style: TextStyle(
               color: Colors.red,
               fontSize: Rem.getPxToRem(40),
@@ -459,14 +461,9 @@ class _GoodsDetail extends State<GoodsDetail> {
   Widget buildSize(BuildContext context) {
     return Container(
       height: Rem.getPxToRem(100),
+      margin: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: Colors.grey,
-            width: .5,
-          ),
-        ),
       ),
       child: Row(
         children: <Widget>[
@@ -479,28 +476,313 @@ class _GoodsDetail extends State<GoodsDetail> {
           ),
           Expanded(
             child: Padding(
-                padding: EdgeInsets.all(5),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        '1.5m床垫*1+枕头*2、浅杏粉1.5m',
-                        overflow: TextOverflow.ellipsis,
+              padding: EdgeInsets.all(5),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      '${chooseSizeStr.length > 0 ? chooseSizeStr : '该商品没有size!'}',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text('x$goodsNumber'),
+                ],
+              ),
+            ),
+          ),
+          InkResponse(
+            child: Padding(
+              padding: EdgeInsets.all(5),
+              child: Icon(
+                Icons.keyboard_arrow_right,
+                color: Colors.grey,
+              ),
+            ),
+            onTap: () {
+              buildSizeModel(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 商品规格弹窗
+  buildSizeModel(BuildContext context) {
+    return showModalBottomSheetOp(
+      backgroundColor: Colors.transparent,
+      context: context,
+      // 这里不知道为什么会重复执行TODO优化
+      // 因为动画问题
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (context1, setstate1) {
+          return Container(
+            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(10.0),
+              ),
+            ),
+            child: Column(
+              children: <Widget>[
+                // close按钮
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: InkResponse(
+                    child: Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[100],
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30),
+                        ),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.grey[500],
+                        ),
                       ),
                     ),
-                    Text('x1'),
-                  ],
-                )),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                // 商品图片
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        height: 100,
+                        child: Row(
+                          children: <Widget>[
+                            Container(
+                              width: 100,
+                              height: 100,
+                              child: CachedNetworkImage(
+                                imageUrl: goodsMsgs['info']['list_pic_url'],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      height: 75,
+                                      child: Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: "￥",
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text:
+                                                    '${goodsStockPrice['retail_price']}',
+                                                style: TextStyle(
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 25,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 25,
+                                      child: Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            '${chooseSizeStr.length > 0 ? chooseSizeStr : goodsMsgs["info"]['name']}',
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                            overflow: TextOverflow.ellipsis,
+                                          )),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                //商品规格
+                buildSizeItem(context, setstate1),
+                // 商品数量
+                buildSizeNun(context, setstate1),
+              ],
+            ),
+          );
+        });
+      },
+    );
+  }
+
+  Widget buildSizeNun(BuildContext context, setstate1) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(0, 5, 5, 10),
+      child: Column(
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+            child: Text(
+              '数量',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
-          Padding(
-            padding: EdgeInsets.all(5),
-            child: Icon(
-              Icons.keyboard_arrow_right,
-              color: Colors.grey,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+              child: Count(
+                number: goodsNumber,
+                min: goodsMin,
+                max: goodsMax,
+                onChange: (index) {
+                  setstate1(() {
+                    goodsNumber = index;
+                  });
+                  setState(() {
+                    goodsNumber = index;
+                  });
+                },
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  // 规格选择器
+  Widget buildSizeItem(BuildContext context, setstate1) {
+    var specificationList = goodsMsgs['specificationList'];
+    List<Widget> list = [];
+    for (var i = 0; i < specificationList.length; i++) {
+      List<Widget> sizeItemList = [];
+      for (var j = 0; j < specificationList[i]['valueList'].length; j++) {
+        if (j == chooseSizeIndex[i]) {
+          sizeItemList.add(
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(10, 240, 10, 32),
+                border: Border.all(color: Colors.red),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
+                ),
+              ),
+              child: Text(
+                specificationList[i]['valueList'][j]['value'],
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          );
+        } else {
+          sizeItemList.add(InkResponse(
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                border: Border.all(color: Colors.grey[200]),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(30),
+                ),
+              ),
+              child: Text(specificationList[i]['valueList'][j]['value']),
+            ),
+            onTap: () {
+              chooseSizeIndex[i] = j;
+              setstate1(() {});
+              Map data = getSizeMsgByIndex(chooseSizeIndex);
+              setState(() {
+                chooseSizeIndex = chooseSizeIndex;
+                chooseSizeStr = data['chooseSizeStr'];
+                goodsNumber = 0;
+                goodsMax = data['goodsStockPrice']['goods_number'];
+                goodsStockPrice = data['goodsStockPrice'];
+              });
+            },
+          ));
+        }
+      }
+      list.add(
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 5),
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                margin: EdgeInsets.only(bottom: 5),
+                child: Text(
+                  specificationList[i]['name'],
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                child: Wrap(
+                  spacing: 20,
+                  runSpacing: 10,
+                  children: sizeItemList,
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    }
+    return Column(
+      children: list,
+    );
+  }
+
+  // 通过下标获取商品的价格跟规格名称
+  getSizeMsgByIndex(chooseSizeIndex) {
+    var specificationList = goodsMsgs['specificationList'];
+    List sizeStrList = [];
+    List sizeIdList = [];
+    for (var i = 0; i < specificationList.length; i++) {
+      for (var j = 0; j < specificationList[i]['valueList'].length; j++) {
+        if (chooseSizeIndex[i] == j) {
+          sizeStrList.add(specificationList[i]['valueList'][j]['value']);
+          sizeIdList.add(specificationList[i]['valueList'][j]['id']);
+          break;
+        }
+      }
+    }
+    Map goodsStockAndPrice =
+        getGoodsMsgById(goodsMsgs['productList'], sizeIdList.join('_'));
+    return {
+      'chooseSizeStr': sizeStrList.join('、'),
+      'goodsStockPrice': goodsStockAndPrice,
+    };
+  }
+
+  // 获取某规格的商品信息
+  getGoodsMsgById(List productList, String id) {
+    for (int i = 0; i < productList.length; i++) {
+      if (productList[i]['goods_specification_ids'] == id) {
+        return productList[i];
+      }
+    }
   }
 }
