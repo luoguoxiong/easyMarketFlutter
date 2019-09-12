@@ -91,12 +91,18 @@ class Api {
   }
 
   // 商品信息
-  static Future getGoodsMSG({int id}) async {
-    return await http.get('/goods/detail', {'id': id});
+  static Future getGoodsMSG({int id, String token}) async {
+    return await http.getToken('/goods/detail', token, {'id': id});
   }
 
   // 获取购物信息
   static Future getCartMsg({String token, int id}) async {
     return await http.getToken('/cart/index', token, {'id': id});
+  }
+
+  // 添加到购物车
+  static Future postAddCart({String token, int id}) async {
+    return await http
+        .postToken('/collect/addordelete', token, {'valueId': id, 'typeId': 0});
   }
 }

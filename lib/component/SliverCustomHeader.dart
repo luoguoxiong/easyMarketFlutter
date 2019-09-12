@@ -71,7 +71,7 @@ class SliverCustomHeaderDelegate extends SliverPersistentHeaderDelegate {
                     children: <Widget>[
                       IconButton(
                         icon: Icon(
-                          Icons.arrow_back_ios,
+                          Icons.keyboard_arrow_left,
                           color: this.makeStickyHeaderTextColor(
                               shrinkOffset, true), // 返回图标颜色
                         ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_market/utils/rem.dart';
 
-Color borderColor = Color.fromARGB(255, 0, 191, 255);
+// Color borderColor = Color.fromARGB(255, 0, 191, 255);
+Color borderColor = Colors.grey;
 
 class Count extends StatelessWidget {
   Count({
@@ -24,30 +25,32 @@ class Count extends StatelessWidget {
     }
   }
 
+// 相当于render
   Widget build(BuildContext context) {
     return Container(
-      height: Rem.getPxToRem(80),
-      width: Rem.getPxToRem(280),
+      height: Rem.getPxToRem(70),
+      width: Rem.getPxToRem(260),
       decoration: BoxDecoration(
-          border: Border.all(
-        color: borderColor,
-      )),
+        border: Border.all(
+          color: borderColor,
+        ),
+      ),
       child: Row(
         children: <Widget>[
           Container(
-            width: Rem.getPxToRem(80),
+            width: Rem.getPxToRem(70),
             color: this.min >= this.number ? Colors.grey[200] : Colors.white,
-            child: Center(
-              child: IconButton(
-                icon: Icon(
+            child: InkResponse(
+              child: Center(
+                child: Icon(
                   Icons.remove,
                   color:
                       this.min >= this.number ? Colors.grey[500] : Colors.black,
                 ),
-                onPressed: () {
-                  this.onClickBtn('remove');
-                },
               ),
+              onTap: () {
+                this.onClickBtn('remove');
+              },
             ),
           ),
           Expanded(
@@ -67,19 +70,19 @@ class Count extends StatelessWidget {
             ),
           ),
           Container(
-            width: Rem.getPxToRem(80),
+            width: Rem.getPxToRem(70),
             color: this.max <= this.number ? Colors.grey[200] : Colors.white,
-            child: Center(
-              child: IconButton(
-                icon: Icon(
+            child: InkResponse(
+              child: Center(
+                child: Icon(
                   Icons.add,
                   color:
                       this.max <= this.number ? Colors.grey[500] : Colors.black,
                 ),
-                onPressed: () {
-                  this.onClickBtn('add');
-                },
               ),
+              onTap: () {
+                this.onClickBtn('add');
+              },
             ),
           ),
         ],

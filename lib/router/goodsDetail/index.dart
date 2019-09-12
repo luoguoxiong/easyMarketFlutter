@@ -14,6 +14,7 @@ import 'package:easy_market/api/index.dart';
 import 'package:easy_market/component/bottom_sheet.dart';
 import 'package:easy_market/component/SliverCustomHeader.dart';
 import 'package:easy_market/component/count.dart';
+import 'package:easy_market/router/index.dart';
 
 class GoodsDetail extends StatefulWidget {
   GoodsDetail({this.arguments});
@@ -45,6 +46,10 @@ class _GoodsDetail extends State<GoodsDetail> {
 
   int goodsMax = 0; //商品最多
 
+  String userToken; //用户token
+
+  int userHasCollect; //用户是否收藏0：否；1：是
+
   // 我不知道是否应该在这里进行数据请求，但我需要获取provider的值
   @override
   void didChangeDependencies() {
@@ -55,16 +60,15 @@ class _GoodsDetail extends State<GoodsDetail> {
   getInitData() async {
     int id = widget.arguments['id'];
     final model = Provider.of<Model>(this.context);
-    List api = [Api.getGoodsMSG(id: id)];
+    List<Future> api = [
+      Api.getGoodsMSG(id: id, token: model.token == null ? null : model.token)
+    ];
     if (model.token != null) {
       api.add(
         Api.getCartMsg(token: model.token, id: id),
       );
     }
-    var data = await Future.wait([
-      Api.getGoodsMSG(id: id),
-      Api.getCartMsg(token: model.token, id: id),
-    ]);
+    var data = await Future.wait(api);
     var goodsMsg = data[0].data;
     var cartData = model.token != null ? data[1].data : null;
 
@@ -84,11 +88,13 @@ class _GoodsDetail extends State<GoodsDetail> {
     setState(() {
       imgList = goodsMsg['gallery'];
       goodsMsgs = goodsMsg;
+      userHasCollect = goodsMsg['userHasCollect'];
       initLoading = false;
       goodsMax = goodsStockPriceAny['goods_number'];
       chooseSizeIndex = sizeIndex;
       chooseSizeStr = sizeNameList.join('、');
       goodsStockPrice = goodsStockPriceAny;
+      userToken = model.token;
       goodsCount =
           model.token != null ? cartData['cartTotal']['goodsCount'] : 0;
     });
@@ -118,26 +124,39 @@ class _GoodsDetail extends State<GoodsDetail> {
       padding: EdgeInsets.symmetric(vertical: Rem.getPxToRem(10)),
       child: Row(
         children: <Widget>[
-          Container(
-            width: Rem.getPxToRem(100),
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Icon(
-                    Icons.star,
-                    color: Colors.yellow,
-                    size: Rem.getPxToRem(50),
+          InkResponse(
+            child: Container(
+              width: Rem.getPxToRem(100),
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Icon(
+                      userHasCollect == 1 ? Icons.star : Icons.star_border,
+                      color: userHasCollect == 1 ? Colors.yellow : Colors.grey,
+                      size: Rem.getPxToRem(50),
+                    ),
                   ),
-                ),
-                Center(
-                  child: Text(
-                    '收藏',
-                    style: TextStyle(
-                        color: Colors.grey, fontSize: Rem.getPxToRem(22)),
-                  ),
-                )
-              ],
+                  Center(
+                    child: Text(
+                      '收藏',
+                      style: TextStyle(
+                          color: Colors.grey, fontSize: Rem.getPxToRem(22)),
+                    ),
+                  )
+                ],
+              ),
             ),
+            onTap: () async {
+              if (userToken != null) {
+                await Api.postAddCart(
+                    id: widget.arguments['id'], token: userToken);
+                setState(() {
+                  userHasCollect = userHasCollect == 1 ? 0 : 1;
+                });
+              } else {
+                Router.push('/login', context);
+              }
+            },
           ),
           Container(
             width: Rem.getPxToRem(110),
@@ -154,28 +173,30 @@ class _GoodsDetail extends State<GoodsDetail> {
                           color: Colors.grey,
                           size: Rem.getPxToRem(50),
                         ),
-                        Positioned(
-                          top: 0,
-                          right: Rem.getPxToRem(20),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 2),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Colors.red),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(30),
-                              ),
-                            ),
-                            child: Text(
-                              '$goodsCount',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: Rem.getPxToRem(20),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        )
+                        userToken != null
+                            ? Positioned(
+                                top: 0,
+                                right: Rem.getPxToRem(20),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: Colors.red),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(30),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    '$goodsCount',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: Rem.getPxToRem(20),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container(),
                       ],
                     ),
                   ),
@@ -626,6 +647,74 @@ class _GoodsDetail extends State<GoodsDetail> {
                 buildSizeItem(context, setstate1),
                 // 商品数量
                 buildSizeNun(context, setstate1),
+                // 下单或加入购物车
+                Container(
+                  height: Rem.getPxToRem(80),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(
+                            Rem.getPxToRem(20),
+                            0,
+                            Rem.getPxToRem(10),
+                            0,
+                          ),
+                          child: Center(
+                            child: Container(
+                              child: Center(
+                                child: Text(
+                                  '加入购物车',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(Rem.getPxToRem(80)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(
+                            Rem.getPxToRem(10),
+                            0,
+                            Rem.getPxToRem(20),
+                            0,
+                          ),
+                          child: Center(
+                            child: Container(
+                              child: Center(
+                                child: Text(
+                                  '立即购买',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              width: double.infinity,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(Rem.getPxToRem(80)),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
               ],
             ),
           );

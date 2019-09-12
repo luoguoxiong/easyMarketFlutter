@@ -21,6 +21,7 @@ class SpUtil {
     _spf = await SharedPreferences.getInstance();
   }
 
+// 避免重复初始化
   static Future<SpUtil> getInstance() async {
     if (_instance == null) {
       _instance = new SpUtil._();

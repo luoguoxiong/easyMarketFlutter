@@ -13,10 +13,11 @@ class OpenAd extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage('assets/images/timg.jpg'),
-        fit: BoxFit.cover,
-      )),
+        image: DecorationImage(
+          image: AssetImage('assets/images/timg.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Stack(
         children: <Widget>[
           Positioned(
