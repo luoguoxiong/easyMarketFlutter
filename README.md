@@ -14,10 +14,10 @@
 
 ## 预览
 
-| ![](./imges/ad.png)          | ![](./imges/goodsDetail.gif) | ![](./imges/topic.png)   | ![](./imges/sort.png)  |
-| ---------------------------- | ---------------------------- | ------------------------ | ---------------------- |
-| ![](./imges/mine.png)        | ![](./imges/login.png)       | ![](./imges/catalog.png) | ![](./imges/brand.png) |
-| ![](./imges/topicDetail.png) | ![](./imges/home.png)        |                          |                        |
+| ![](./imges/ad.png)          | ![](./imges/goodsDetail.png) | ![](./imges/goodsSize.png) | ![](./imges/sort.png)  |
+| ---------------------------- | ---------------------------- | -------------------------- | ---------------------- |
+| ![](./imges/mine.png)        | ![](./imges/login.png)       | ![](./imges/catalog.png)   | ![](./imges/brand.png) |
+| ![](./imges/topicDetail.png) | ![](./imges/home.png)        | ![](./imges/topic.png)     |                        |
 
 ## 已实现
 
