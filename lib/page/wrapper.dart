@@ -21,6 +21,15 @@ class _WrapKeepState extends State<WrapKeepState>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return widget.hocWidget;
+    return Scaffold(
+      appBar: new PreferredSize(
+        child: new Container(
+          color: Colors.green,
+        ),
+        preferredSize: new Size(MediaQuery.of(context).size.width, 0),
+      ),
+      body: widget.hocWidget,
+    );
+    // return widget.hocWidget;
   }
 }

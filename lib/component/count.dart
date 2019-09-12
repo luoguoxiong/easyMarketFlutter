@@ -17,6 +17,8 @@ class Count extends StatelessWidget {
   final int min;
   final int max;
 
+  final int a = 1;
+
   onClickBtn(String type) {
     if (type == 'remove' && number > min) {
       onChange(number - 1);

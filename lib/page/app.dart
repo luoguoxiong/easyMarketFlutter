@@ -26,7 +26,8 @@ class _ApplicationPageState extends State<App> {
     WrapKeepState(Home()),
     WrapKeepState(Topic()),
     WrapKeepState(Sort()),
-    WrapKeepState(Cart()),
+    // WrapKeepState(Cart()),
+    Cart(),
     WrapKeepState(Mine()),
   ];
 
@@ -84,16 +85,16 @@ class _ApplicationPageState extends State<App> {
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Color.fromARGB(1, 200, 200, 200),
-      appBar: new PreferredSize(
-        child: new Container(
-          // decoration: new BoxDecoration(
-          //   gradient:
-          //       new LinearGradient(colors: [Colors.teal, Colors.lightGreen]),
-          // ),
-          color: Colors.green,
-        ),
-        preferredSize: new Size(MediaQuery.of(context).size.width, 0),
-      ),
+      // appBar: new PreferredSize(
+      //   child: new Container(
+      //     // decoration: new BoxDecoration(
+      //     //   gradient:
+      //     //       new LinearGradient(colors: [Colors.teal, Colors.lightGreen]),
+      //     // ),
+      //     color: Colors.green,
+      //   ),
+      //   preferredSize: new Size(MediaQuery.of(context).size.width, 0),
+      // ),
       // PageView+wrapper封装保存页面状态
       body: PageView(
         children: pageList,

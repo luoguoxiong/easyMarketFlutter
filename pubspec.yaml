@@ -30,6 +30,7 @@ dependencies:
   cached_network_image: ^1.1.1
   shared_preferences: ^0.4.3
   provider: ^3.1.0
+  flutter_webview_plugin: ^0.3.7
 
 dev_dependencies:
   flutter_test:

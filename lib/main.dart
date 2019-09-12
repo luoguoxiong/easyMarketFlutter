@@ -34,6 +34,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp(this.token, this.userName);
+
   final String token;
 
   final String userName;
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 设置设计稿的宽度
+
     Rem.setDesignWidth(750.0);
     return MultiProvider(
       providers: [
