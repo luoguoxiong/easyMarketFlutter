@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:easy_market/model/index.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class Cart extends StatefulWidget {

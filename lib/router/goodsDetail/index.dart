@@ -7,14 +7,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:provider/provider.dart';
-import 'package:easy_market/model/index.dart';
 import 'package:easy_market/utils/rem.dart';
+import 'package:easy_market/utils/cache.dart';
 import 'package:easy_market/api/index.dart';
 import 'package:easy_market/component/bottom_sheet.dart';
 import 'package:easy_market/component/SliverCustomHeader.dart';
 import 'package:easy_market/component/count.dart';
 import 'package:easy_market/router/index.dart';
+import 'package:flutter_html/flutter_html.dart';
 
 class GoodsDetail extends StatefulWidget {
   GoodsDetail({this.arguments});
@@ -50,27 +50,27 @@ class _GoodsDetail extends State<GoodsDetail> {
 
   int userHasCollect; //用户是否收藏0：否；1：是
 
-  // 我不知道是否应该在这里进行数据请求，但我需要获取provider的值
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
     getInitData();
   }
 
   getInitData() async {
     int id = widget.arguments['id'];
-    final model = Provider.of<Model>(this.context);
+    var sq = await SpUtil.getInstance();
+    final token = sq.getString('token');
     List<Future> api = [
-      Api.getGoodsMSG(id: id, token: model.token == null ? null : model.token)
+      Api.getGoodsMSG(id: id, token: token == null ? null : token)
     ];
-    if (model.token != null) {
+    if (token != null) {
       api.add(
-        Api.getCartMsg(token: model.token, id: id),
+        Api.getCartMsg(token: token, id: id),
       );
     }
     var data = await Future.wait(api);
     var goodsMsg = data[0].data;
-    var cartData = model.token != null ? data[1].data : null;
+    var cartData = token != null ? data[1].data : null;
 
     var specificationList = goodsMsg['specificationList'];
     List<int> sizeIndex = [];
@@ -94,9 +94,8 @@ class _GoodsDetail extends State<GoodsDetail> {
       chooseSizeIndex = sizeIndex;
       chooseSizeStr = sizeNameList.join('、');
       goodsStockPrice = goodsStockPriceAny;
-      userToken = model.token;
-      goodsCount =
-          model.token != null ? cartData['cartTotal']['goodsCount'] : 0;
+      userToken = token;
+      goodsCount = token != null ? cartData['cartTotal']['goodsCount'] : 0;
     });
   }
 
@@ -154,7 +153,11 @@ class _GoodsDetail extends State<GoodsDetail> {
                   userHasCollect = userHasCollect == 1 ? 0 : 1;
                 });
               } else {
-                Router.push('/login', context);
+                Router.push('/login', context, null, () async {
+                  var sq = await SpUtil.getInstance();
+                  final token = sq.getString('token');
+                  print(token);
+                });
               }
             },
           ),
@@ -277,9 +280,9 @@ class _GoodsDetail extends State<GoodsDetail> {
         color: Colors.white,
         boxShadow: [
           new BoxShadow(
-            color: Colors.grey[200],
+            color: Colors.grey[300],
             blurRadius: Rem.getPxToRem(1),
-            spreadRadius: 0.1,
+            spreadRadius: 0.2,
           )
         ],
       ),
@@ -318,9 +321,31 @@ class _GoodsDetail extends State<GoodsDetail> {
           buildOneWidget(
             buildSize(context),
           ),
-          buildOneWidget(Container(
-            height: 500,
-          ))
+          buildOneWidget(
+            buildComment(context),
+          ),
+          buildOneWidget(Column(
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                height: Rem.getPxToRem(100),
+                color: Colors.white,
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: Text(
+                  '商品详情',
+                  style: TextStyle(
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Html(
+                data: goodsMsgs['info']['goods_desc']
+                    .replaceAll('<p><br/></p>', ''),
+              ),
+            ],
+          )),
         ],
       );
     }
@@ -480,49 +505,166 @@ class _GoodsDetail extends State<GoodsDetail> {
 
   // 选择规格
   Widget buildSize(BuildContext context) {
-    return Container(
-      height: Rem.getPxToRem(100),
-      margin: EdgeInsets.only(top: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-      child: Row(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(5),
-            child: Text(
-              '已选',
-              style: TextStyle(color: Colors.grey),
-            ),
-          ),
-          Expanded(
-            child: Padding(
+    return InkResponse(
+      child: Container(
+        height: Rem.getPxToRem(100),
+        margin: EdgeInsets.only(top: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Row(
+          children: <Widget>[
+            Padding(
               padding: EdgeInsets.all(5),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      '${chooseSizeStr.length > 0 ? chooseSizeStr : '该商品没有size!'}',
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Text('x$goodsNumber'),
-                ],
+              child: Text(
+                '已选',
+                style: TextStyle(color: Colors.grey),
               ),
             ),
-          ),
-          InkResponse(
-            child: Padding(
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.all(5),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        '${chooseSizeStr.length > 0 ? chooseSizeStr : '该商品没有size!'}',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text('x$goodsNumber'),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
               padding: EdgeInsets.all(5),
               child: Icon(
                 Icons.keyboard_arrow_right,
                 color: Colors.grey,
               ),
             ),
+          ],
+        ),
+      ),
+      onTap: () {
+        buildSizeModel(context);
+      },
+    );
+  }
+
+  // 商品评论
+  Widget buildComment(BuildContext context) {
+    List<Widget> imgs = [];
+    if (goodsMsgs['comment']['count'] > 0) {
+      var imgListMap = goodsMsgs['comment']['data']['pic_list'];
+      for (int i = 0; i < imgListMap.length; i++) {
+        imgs.add(Container(
+          height: Rem.getPxToRem(200),
+          width: Rem.getPxToRem(200),
+          child: CachedNetworkImage(
+            imageUrl: imgListMap[i]['pic_url'],
+            fit: BoxFit.cover,
+          ),
+        ));
+      }
+    }
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+      ),
+      child: Column(
+        children: <Widget>[
+          InkResponse(
+            child: Container(
+              height: Rem.getPxToRem(100),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(left: 5),
+                    child: Text(
+                      '评论',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        '${goodsMsgs['comment']['count']}条',
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             onTap: () {
-              buildSizeModel(context);
+              if (goodsMsgs['comment']['count'] > 0) {
+                Router.push(
+                    '/moreComment', context, {'id': widget.arguments['id']});
+              }
             },
           ),
+          goodsMsgs['comment']['count'] > 0
+              ? Container(
+                  height: Rem.getPxToRem(80),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Colors.grey,
+                        width: .5,
+                      ),
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text('匿名用户'),
+                      ),
+                      Text(
+                        '${goodsMsgs['comment']['data']['add_time']}',
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Container(),
+          goodsMsgs['comment']['count'] > 0
+              ? Container(
+                  height: Rem.getPxToRem(80),
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Text(
+                    '${goodsMsgs['comment']['data']['content']}',
+                    softWrap: true,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                )
+              : Container(),
+          goodsMsgs['comment']['count'] > 0
+              ? Container(
+                  padding: EdgeInsets.fromLTRB(5, 0, 5, 5),
+                  width: double.infinity,
+                  child: Wrap(
+                    children: imgs,
+                  ),
+                )
+              : Container()
         ],
       ),
     );

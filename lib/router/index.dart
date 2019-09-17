@@ -54,13 +54,22 @@ class Router {
 
 // 组件跳转
   static link(Widget child, String routeName, BuildContext context,
-      [Map parmas]) {
+      [Map parmas, Function callBack]) {
     return GestureDetector(
       onTap: () {
         if (parmas != null) {
-          Navigator.pushNamed(context, routeName, arguments: parmas);
+          Navigator.pushNamed(context, routeName, arguments: parmas)
+              .then((onValue) {
+            if (callBack != null) {
+              callBack();
+            }
+          });
         } else {
-          Navigator.pushNamed(context, routeName);
+          Navigator.pushNamed(context, routeName).then((onValue) {
+            if (callBack != null) {
+              callBack();
+            }
+          });
         }
       },
       child: child,
@@ -68,11 +77,21 @@ class Router {
   }
 
 // 方法跳转
-  static push(String routeName, BuildContext context, [Map parmas]) {
+  static push(String routeName, BuildContext context,
+      [Map parmas, Function callBack]) {
     if (parmas != null) {
-      Navigator.pushNamed(context, routeName, arguments: parmas);
+      Navigator.pushNamed(context, routeName, arguments: parmas)
+          .then((onValue) {
+        if (callBack != null) {
+          callBack();
+        }
+      });
     } else {
-      Navigator.pushNamed(context, routeName);
+      Navigator.pushNamed(context, routeName).then((onValue) {
+        if (callBack != null) {
+          callBack();
+        }
+      });
     }
   }
 
