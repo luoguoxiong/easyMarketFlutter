@@ -156,7 +156,9 @@ class _GoodsDetail extends State<GoodsDetail> {
                 Router.push('/login', context, null, () async {
                   var sq = await SpUtil.getInstance();
                   final token = sq.getString('token');
-                  print(token);
+                  if (token != null) {
+                    this.getInitData();
+                  }
                 });
               }
             },
