@@ -58,7 +58,7 @@
 ## 最后
 
 - 如果 EasyMarketFlutter 对你有帮助，留下你的 Star 或者 fork，你的支持是我不断更新的动力！
-- 欢迎你们的 Issues,希望 Flutter 越来越好，大家一起学习!Love Coding!
+- 欢迎你们的 Issues,希望 Flutter 越来越好，大家一起学习!Love Coding!!
 - Thanks!
 
 ## 关于我
