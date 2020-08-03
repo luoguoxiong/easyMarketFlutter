@@ -23,7 +23,7 @@ class Router {
     '/goodsDetail': (context, {arguments}) => GoodsDetail(arguments: arguments),
     '/topicDetail': (context, {arguments}) => TopicDetail(arguments: arguments),
     '/search': (context) => Search(),
-    '/home': (context) => Page(),
+    '/home': (context) => TabPage(),
     '/login': (context) => Login(),
     '/brand': (context, {arguments}) => Brand(arguments: arguments),
     '/writeComment': (context, {arguments}) =>
