@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
               },
               home: Scaffold(
                 resizeToAvoidBottomPadding: false,
-                body: Page(),
+                body: TabPage(),
               ),
             ),
           );

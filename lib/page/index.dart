@@ -4,11 +4,11 @@ import 'package:easy_market/Advertisement/openAd.dart';
 import './app.dart';
 // import 'package:easy_market/utils/rem.dart';
 
-class Page extends StatefulWidget {
+class TabPage extends StatefulWidget {
   _Page createState() => _Page();
 }
 
-class _Page extends State<Page> {
+class _Page extends State<TabPage> {
   // 是否启用广告
   bool showAd = true;
   // 广告展示时间

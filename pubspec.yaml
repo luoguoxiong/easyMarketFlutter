@@ -24,10 +24,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   flutter_swiper: ^1.0.6
-  dio: ^2.1.2
+  dio: ^3.0.9
   transparent_image: ^0.1.0
   english_words: ^3.1.0
-  cached_network_image: ^1.1.1
+  cached_network_image: ^2.0.0-rc
   shared_preferences: ^0.4.3
   provider: ^3.1.0
   flutter_webview_plugin: ^0.3.7
